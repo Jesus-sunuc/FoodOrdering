@@ -1,0 +1,89 @@
+import React, { useState, useEffect, ChangeEvent } from "react";
+import { Modal, Button, Form, Image } from "react-bootstrap";
+import { Item } from "../models/types";
+
+interface ItemModalProps {
+  show: boolean;
+  onClose: () => void;
+  onSave: (item: Item) => void;
+  initialData?: Item;
+}
+
+const ItemModal: React.FC<ItemModalProps> = ({ show, onClose, onSave, initialData }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState<string>("");
+
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title);
+      setDescription(initialData.description);
+      setImage(initialData.image);
+    } else {
+      setTitle("");
+      setDescription("");
+      setImage("");
+    }
+  }, [initialData]);
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = () => {
+    const newItem: Item = {
+      id: initialData?.id || crypto.randomUUID(),
+      title,
+      description,
+      image
+    };
+    onSave(newItem);
+    onClose();
+  };
+
+  return (
+    <Modal show={show} onHide={onClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>{initialData ? "Edit Item" : "Add New Item"}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group controlId="formTitle">
+            <Form.Label>Title</Form.Label>
+            <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} />
+          </Form.Group>
+
+          <Form.Group controlId="formDescription" className="mt-2">
+            <Form.Label>Description</Form.Label>
+            <Form.Control value={description} onChange={(e) => setDescription(e.target.value)} />
+          </Form.Group>
+
+          <Form.Group controlId="formImage" className="mt-2">
+            <Form.Label>Upload Image</Form.Label>
+            <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+          </Form.Group>
+
+          {image && (
+            <div className="mt-3 text-center">
+              <Image src={image} thumbnail style={{ maxHeight: "200px" }} />
+            </div>
+          )}
+        </Form>
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onClose}>Cancel</Button>
+        <Button variant="primary" onClick={handleSave}>Save</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+export default ItemModal;
