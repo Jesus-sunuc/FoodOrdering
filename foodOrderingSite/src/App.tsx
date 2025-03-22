@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 import ItemCard from "./components/ItemCard";
 import toast, { Toaster } from "react-hot-toast";
 import { Item } from "./models/types";
