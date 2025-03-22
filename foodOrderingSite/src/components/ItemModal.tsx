@@ -9,20 +9,28 @@ interface ItemModalProps {
   initialData?: Item;
 }
 
-const ItemModal: React.FC<ItemModalProps> = ({ show, onClose, onSave, initialData }) => {
+const ItemModal: React.FC<ItemModalProps> = ({
+  show,
+  onClose,
+  onSave,
+  initialData,
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
 
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title);
       setDescription(initialData.description);
       setImage(initialData.image);
+      setPrice(initialData.price);
     } else {
       setTitle("");
       setDescription("");
       setImage("");
+      setPrice(0);
     }
   }, [initialData]);
 
@@ -42,7 +50,8 @@ const ItemModal: React.FC<ItemModalProps> = ({ show, onClose, onSave, initialDat
       id: initialData?.id || crypto.randomUUID(),
       title,
       description,
-      image
+      image,
+      price,
     };
     onSave(newItem);
     onClose();
@@ -57,17 +66,37 @@ const ItemModal: React.FC<ItemModalProps> = ({ show, onClose, onSave, initialDat
         <Form>
           <Form.Group controlId="formTitle">
             <Form.Label>Title</Form.Label>
-            <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Form.Control
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </Form.Group>
 
           <Form.Group controlId="formDescription" className="mt-2">
             <Form.Label>Description</Form.Label>
-            <Form.Control value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Form.Control
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </Form.Group>
 
+          <Form.Group controlId="formPrice" className="mt-2">
+            <Form.Label>Price ($)</Form.Label>
+            <Form.Control
+              type="number"
+              min={0}
+              step={0.01}
+              value={price}
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+            />
+          </Form.Group>
           <Form.Group controlId="formImage" className="mt-2">
             <Form.Label>Upload Image</Form.Label>
-            <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
           </Form.Group>
 
           {image && (
@@ -79,8 +108,12 @@ const ItemModal: React.FC<ItemModalProps> = ({ show, onClose, onSave, initialDat
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>Cancel</Button>
-        <Button variant="primary" onClick={handleSave}>Save</Button>
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleSave}>
+          Save
+        </Button>
       </Modal.Footer>
     </Modal>
   );
