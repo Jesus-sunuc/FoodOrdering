@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import ItemCard from "./components/ItemCard";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,6 +10,11 @@ function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<Item | undefined>(undefined);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   const handleAddNew = () => {
     setEditingItem(undefined);
@@ -57,10 +62,37 @@ function App() {
     setShowModal(true);
   };
 
+  useEffect(() => {
+    document.body.className =
+      theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+  }, [theme]);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light" || savedTheme === "dark") {
+      setTheme(savedTheme);
+    }
+  }, []);
+  
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    document.body.className = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+  }, [theme]);
+  
+
   return (
     <Container className="py-4">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h1>Add New Product</h1>
+        <Button
+          variant={theme === "light" ? "dark" : "light"}
+          onClick={toggleTheme}
+        >
+          Switch to {theme === "light" ? "Dark" : "Light"} Mode
+        </Button>
+      </div>
+
       <Toaster />
-      <h1 className="mb-4">Healthy Food Items</h1>
       <Button variant="success" className="mb-4" onClick={handleAddNew}>
         Add New Item
       </Button>
@@ -71,7 +103,7 @@ function App() {
             key={item.id}
             className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex"
           >
-            <ItemCard item={item} onEdit={handleEdit} onDelete={handleDelete} />
+            <ItemCard item={item} onEdit={handleEdit} onDelete={handleDelete} theme={theme}/>
           </div>
         ))}
       </div>
@@ -81,6 +113,7 @@ function App() {
         onClose={() => setShowModal(false)}
         onSave={handleSave}
         initialData={editingItem}
+        theme={theme}
       />
     </Container>
   );

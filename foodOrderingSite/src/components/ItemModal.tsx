@@ -7,6 +7,7 @@ interface ItemModalProps {
   onClose: () => void;
   onSave: (item: Item) => void;
   initialData?: Item;
+  theme: "light" | "dark";
 }
 
 const ItemModal: React.FC<ItemModalProps> = ({
@@ -14,6 +15,7 @@ const ItemModal: React.FC<ItemModalProps> = ({
   onClose,
   onSave,
   initialData,
+  theme,
 }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -58,8 +60,15 @@ const ItemModal: React.FC<ItemModalProps> = ({
   };
 
   return (
-    <Modal show={show} onHide={onClose}>
-      <Modal.Header closeButton>
+    <Modal
+      show={show}
+      onHide={onClose}
+      contentClassName={theme === "dark" ? "bg-dark text-light" : ""}
+    >
+      <Modal.Header
+        closeButton
+        closeVariant={theme === "dark" ? "white" : undefined}
+      >
         <Modal.Title>{initialData ? "Edit Item" : "Add New Item"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
