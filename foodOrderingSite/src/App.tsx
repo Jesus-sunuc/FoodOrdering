@@ -17,10 +17,10 @@ function App() {
   };
 
   const handleSave = (item: Item) => {
-    setItems(prev => {
-      const exists = prev.find(i => i.id === item.id);
+    setItems((prev) => {
+      const exists = prev.find((i) => i.id === item.id);
       if (exists) {
-        return prev.map(i => i.id === item.id ? item : i);
+        return prev.map((i) => (i.id === item.id ? item : i));
       }
       return [...prev, item];
     });
@@ -30,12 +30,24 @@ function App() {
     toast((t) => (
       <span>
         Are you sure?&nbsp;
-        <Button variant="danger" size="sm" onClick={() => {
-          setItems(prev => prev.filter(item => item.id !== id));
-          toast.dismiss(t.id);
-        }}>Yes</Button>
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => {
+            setItems((prev) => prev.filter((item) => item.id !== id));
+            toast.dismiss(t.id);
+          }}
+        >
+          Yes
+        </Button>
         &nbsp;
-        <Button variant="secondary" size="sm" onClick={() => toast.dismiss(t.id)}>No</Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => toast.dismiss(t.id)}
+        >
+          No
+        </Button>
       </span>
     ));
   };
@@ -49,15 +61,21 @@ function App() {
     <Container className="py-4">
       <Toaster />
       <h1 className="mb-4">Healthy Food Items</h1>
-      <Button variant="success" className="mb-4" onClick={handleAddNew}>Add New Item</Button>
-      {items.map(item => (
-        <ItemCard
-          key={item.id}
-          item={item}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      ))}
+      <Button variant="success" className="mb-4" onClick={handleAddNew}>
+        Add New Item
+      </Button>
+
+      <div className="row">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex"
+          >
+            <ItemCard item={item} onEdit={handleEdit} onDelete={handleDelete} />
+          </div>
+        ))}
+      </div>
+
       <ItemModal
         show={showModal}
         onClose={() => setShowModal(false)}
