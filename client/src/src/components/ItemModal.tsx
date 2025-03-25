@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Modal, Button, Form, Image } from "react-bootstrap";
-import { Item } from "../models/types";
+import { Item } from "../features/items/types/Item";
 
 interface ItemModalProps {
   show: boolean;

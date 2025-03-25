@@ -1,6 +1,6 @@
 import React from "react";
-import { Item } from "../models/types";
 import { Button, Card } from "react-bootstrap";
+import { Item } from "../features/items/types/Item";
 
 interface ItemCardProps {
   item: Item;

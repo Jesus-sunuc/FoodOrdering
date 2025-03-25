@@ -1,18 +1,32 @@
 import { useState, useEffect } from "react";
 import ItemCard from "./components/ItemCard";
 import toast, { Toaster } from "react-hot-toast";
-import { Item } from "./models/types";
 import { Button, Container } from "react-bootstrap";
 import ItemModal from "./components/ItemModal";
+import { Item } from "./features/items/types/Item";
+import { itemService } from "./features/items/services/itemService";
 
-function App() {
+export function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<Item | undefined>(undefined);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [loading, setLoading] = useState(false);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
+  const loadItems = async () => {
+    try {
+      setLoading(true);
+      const data = await itemService.getItems();
+      setItems(data);
+    } catch (error) {
+      console.error("Error loading items:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddNew = () => {
@@ -95,6 +109,13 @@ function App() {
       <Button variant="success" className="mb-4" onClick={handleAddNew}>
         Add New Item
       </Button>
+
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h1>List Of New Items</h1>
+        <Button onClick={loadItems} disabled={loading}>
+          {loading ? "Loading..." : "Load Items"}
+        </Button>
+      </div>
 
       <div className="row">
         {items.map((item) => (
