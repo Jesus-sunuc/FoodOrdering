@@ -2,6 +2,7 @@ from fastapi import Depends
 from services.database.connection import get_db_connection
 from models.item import Item
 
+
 class ItemRepository:
     def __init__(self, db=Depends(get_db_connection)):
         self.db = db
@@ -13,15 +14,12 @@ class ItemRepository:
         cursor.close()
         return rows
 
-
     def add(self, item: Item):
         self.db.execute(
             "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?)",
             (item.item_name, item.description, item.price, item.image_url),
         )
         self.db.commit()
-
-
 
     def update(self, item: Item):
         self.db.execute(
