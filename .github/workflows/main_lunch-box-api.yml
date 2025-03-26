@@ -31,7 +31,8 @@ jobs:
       
       - name: Install dependencies
         working-directory: ./api
-        run: pip install -r requirements.txt
+        run: 
+          pip install -r requirements.txt 
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
@@ -45,6 +46,9 @@ jobs:
           path: |
             release.zip
             !venv/
+      - name: Analysing the code with pylint linting code
+        run: |
+          pylint api/
 
   deploy:
     runs-on: ubuntu-latest
