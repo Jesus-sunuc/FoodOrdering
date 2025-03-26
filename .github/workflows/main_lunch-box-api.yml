@@ -46,7 +46,7 @@ jobs:
           path: |
             release.zip
             !venv/
-      - name: Analysing the code with pylint linting code
+      - name: Analyzing the code with black linting code
         run: |
           black --check .
 
