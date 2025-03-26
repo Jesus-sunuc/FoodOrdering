@@ -8,7 +8,7 @@ class ItemRepository:
 
     def get_all(self):
         cursor = self.db.cursor()
-        cursor.execute("SELECT * FROM lunch_box.items")
+        cursor.execute("SELECT * FROM lunch_box.item")
         rows = cursor.fetchall()
         cursor.close()
         return rows
@@ -16,15 +16,15 @@ class ItemRepository:
 
     def add(self, item: Item):
         self.db.execute(
-            "INSERT INTO items (id, title, description, image, price) VALUES (?, ?, ?, ?, ?)",
-            (item.id, item.title, item.description, item.image, item.price),
+            "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?, ?)",
+            (item.item_name, item.description, item.price, item.image_url),
         )
         self.db.commit()
 
     def update(self, item: Item):
         self.db.execute(
-            "UPDATE items SET title=?, description=?, image=?, price=? WHERE id=?",
-            (item.title, item.description, item.image, item.price, item.id),
+            "UPDATE lunch_box.item SET item_name=?, description=?, price=?, image_url=? WHERE id=?",
+            (item.item_name, item.description, item.price, item.image_url, item.id),
         )
         self.db.commit()
 

@@ -18,11 +18,11 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete, theme }) =>
     >
       <Card.Img
         variant="top"
-        src={item.image}
+        src={item.image_url}
         style={{ height: "200px", objectFit: "cover" }}
       />
       <Card.Body className="d-flex flex-column">
-        <Card.Title>{item.title}</Card.Title>
+        <Card.Title>{item.item_name}</Card.Title>
         <Card.Text className="flex-grow-1">
           {item.description}
           <br />

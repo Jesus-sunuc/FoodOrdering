@@ -24,9 +24,9 @@ const ItemModal: React.FC<ItemModalProps> = ({
 
   useEffect(() => {
     if (initialData) {
-      setTitle(initialData.title);
+      setTitle(initialData.item_name);
       setDescription(initialData.description);
-      setImage(initialData.image);
+      setImage(initialData.image_url);
       setPrice(initialData.price);
     } else {
       setTitle("");
@@ -50,9 +50,9 @@ const ItemModal: React.FC<ItemModalProps> = ({
   const handleSave = () => {
     const newItem: Item = {
       id: initialData?.id || crypto.randomUUID(),
-      title,
+      item_name: title,
       description,
-      image,
+      image_url: image,
       price,
     };
     onSave(newItem);
