@@ -16,10 +16,12 @@ class ItemRepository:
 
     def add(self, item: Item):
         self.db.execute(
-            "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?)",
             (item.item_name, item.description, item.price, item.image_url),
         )
         self.db.commit()
+
+
 
     def update(self, item: Item):
         self.db.execute(

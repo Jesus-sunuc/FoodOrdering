@@ -76,10 +76,11 @@ jobs:
       #   with:
       #     app-name: 'lunch-box-api'
       #     slot-name: 'Production'
-
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
+      
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: 'lunch-box-api'
+          app-name: lunch-box-api
+          slot-name: production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: release.zip
+          package: ./api
