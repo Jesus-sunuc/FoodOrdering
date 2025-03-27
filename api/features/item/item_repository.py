@@ -14,20 +14,20 @@ class ItemRepository:
         cursor.close()
         return rows
 
-    def add(self, item: Item):
-        self.db.execute(
-            "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?)",
-            (item.item_name, item.description, item.price, item.image_url),
-        )
-        self.db.commit()
+    # def add(self, item: Item):
+    #     self.db.execute(
+    #         "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?)",
+    #         (item.item_name, item.description, item.price, item.image_url),
+    #     )
+    #     self.db.commit()
 
-    def update(self, item: Item):
-        self.db.execute(
-            "UPDATE lunch_box.item SET item_name=?, description=?, price=?, image_url=? WHERE id=?",
-            (item.item_name, item.description, item.price, item.image_url, item.id),
-        )
-        self.db.commit()
+    # def update(self, item: Item):
+    #     self.db.execute(
+    #         "UPDATE lunch_box.item SET item_name=?, description=?, price=?, image_url=? WHERE id=?",
+    #         (item.item_name, item.description, item.price, item.image_url, item.id),
+    #     )
+    #     self.db.commit()
 
-    def delete(self, id: str):
-        self.db.execute("DELETE FROM items WHERE id=?", (id,))
-        self.db.commit()
+    # def delete(self, id: str):
+    #     self.db.execute("DELETE FROM items WHERE id=?", (id,))
+    #     self.db.commit()
