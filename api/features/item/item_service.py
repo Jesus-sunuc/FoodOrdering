@@ -10,11 +10,11 @@ class ItemService:
     def get_items(self):
         return self.repo.get_all()
 
-    def add_item(self, item: Item):
-        self.repo.add(item)
+    # def add_item(self, item: Item):
+    #     self.repo.add(item)
 
-    def update_item(self, item: Item):
-        self.repo.update(item)
+    # def update_item(self, item: Item):
+    #     self.repo.update(item)
 
-    def delete_item(self, id: str):
-        self.repo.delete(id)
+    # def delete_item(self, id: str):
+    #     self.repo.delete(id)
