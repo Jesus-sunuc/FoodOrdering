@@ -49,6 +49,9 @@ jobs:
       - name: Analyzing the code with black linting code
         run: |
           black --check .
+      - name: Run Tests
+        run: pytest api/items_test.py
+ 
 
   deploy:
     runs-on: ubuntu-latest
