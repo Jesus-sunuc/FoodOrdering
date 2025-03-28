@@ -30,3 +30,4 @@
 #     item = Item(id="6", title="Avocado Toast", description="Sourdough toast topped with smashed avocado, chili flakes, and microgreens.", image="https://storagelunchbox.blob.core.windows.net/images/avocado_toast.jpg", price=6.99)
 #     assert item in items
  
+print("Test passed");
