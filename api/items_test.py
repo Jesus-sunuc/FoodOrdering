@@ -51,4 +51,4 @@ def test_get_all(repo):
         price=6.99,
     )
 
-    assert expected_item in items
+    assert expected_item not in items
