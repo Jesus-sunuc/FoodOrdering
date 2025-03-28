@@ -53,6 +53,7 @@ def test_get_all(repo):
 
     assert expected_item not in items
 
+
 def test_endpointnav():
     response = client.get("/")
     assert response.json() == {"message": "Hello from Azure!"}
