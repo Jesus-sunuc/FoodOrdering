@@ -11,7 +11,7 @@ def root():
 
 
 origins = [
-    "https://yellow-island-0e74ba610.6.azurestaticapps.net/",
+    "https://yellow-island-0e74ba610.6.azurestaticapps.net",
     "http://localhost:5173",
 ]
 
