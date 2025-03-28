@@ -8,6 +8,7 @@ from main import app
 
 client = TestClient(app)
 
+
 class Item(BaseModel):
     id: str
     title: str
@@ -15,15 +16,18 @@ class Item(BaseModel):
     image: str
     price: float
 
+
 @pytest.fixture(scope="module")
 def dbconn():
-    conn = get_db_connection() 
+    conn = get_db_connection()
     yield conn
     conn.close()
+
 
 @pytest.fixture(scope="module")
 def repo(dbconn):
     return ItemRepository(dbconn)
+
 
 def test_get_all(repo):
     db_rows = repo.get_all()
@@ -34,7 +38,7 @@ def test_get_all(repo):
             title=row["item_name"],
             description=row["description"],
             image=row["image_url"],
-            price=float(row["price"])
+            price=float(row["price"]),
         )
         for row in db_rows
     ]
@@ -44,7 +48,7 @@ def test_get_all(repo):
         title="Avocado Toast",
         description="Sourdough toast topped with smashed avocado, chili flakes, and microgreens.",
         image="https://storagelunchbox.blob.core.windows.net/images/avocado_toast.jpg",
-        price=6.99
+        price=6.99,
     )
 
     assert expected_item in items
