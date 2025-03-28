@@ -9,11 +9,16 @@ interface ItemCardProps {
   theme: "light" | "dark";
 }
 
-const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete, theme }) => {
+const ItemCard: React.FC<ItemCardProps> = ({
+  item,
+  onEdit,
+  onDelete,
+  theme,
+}) => {
   return (
     <Card
-      className={`mb-3 flex-fill shadow-sm bg-${theme} text-${
-        theme === "light" ? "dark" : "light"
+      className={`mb-3 flex-fill shadow-sm ${
+        theme === "dark" ? "custom-card-dark" : "bg-light text-dark"
       }`}
     >
       <Card.Img

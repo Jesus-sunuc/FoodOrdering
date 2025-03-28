@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Modal, Button, Form, Image } from "react-bootstrap";
 import { Item } from "../features/items/types/Item";
+import "../App.css";
 
 interface ItemModalProps {
   show: boolean;
@@ -63,7 +64,7 @@ const ItemModal: React.FC<ItemModalProps> = ({
     <Modal
       show={show}
       onHide={onClose}
-      contentClassName={theme === "dark" ? "bg-dark text-light" : ""}
+      contentClassName={theme === "dark" ? "custom-dark text-light" : ""}
     >
       <Modal.Header
         closeButton
@@ -74,7 +75,7 @@ const ItemModal: React.FC<ItemModalProps> = ({
       <Modal.Body>
         <Form>
           <Form.Group controlId="formTitle">
-            <Form.Label>Title</Form.Label>
+            <Form.Label>Name</Form.Label>
             <Form.Control
               value={title}
               onChange={(e) => setTitle(e.target.value)}

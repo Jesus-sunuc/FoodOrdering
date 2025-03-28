@@ -5,6 +5,7 @@ import { Button, Container } from "react-bootstrap";
 import ItemModal from "./components/ItemModal";
 import { Item } from "./features/items/types/Item";
 import { itemService } from "./features/items/services/itemService";
+import "./App.css";
 
 export function App() {
   const [items, setItems] = useState<Item[]>([]);
@@ -77,7 +78,7 @@ export function App() {
 
   useEffect(() => {
     document.body.className =
-      theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+      theme === "dark" ? "custom-dark" : "bg-light text-dark";
   }, [theme]);
 
   useEffect(() => {
@@ -86,12 +87,16 @@ export function App() {
       setTheme(savedTheme);
     }
   }, []);
-  
+
   useEffect(() => {
     localStorage.setItem("theme", theme);
-    document.body.className = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+    document.body.className =
+      theme === "dark" ? "custom-dark" : "bg-light text-dark";
   }, [theme]);
-  
+
+  useEffect(() => {
+    loadItems();
+  }, []);
 
   return (
     <Container className="py-4">
@@ -101,7 +106,12 @@ export function App() {
           variant={theme === "light" ? "dark" : "light"}
           onClick={toggleTheme}
         >
-          Switch to {theme === "light" ? "Dark" : "Light"} Mode
+          <i
+            className={`bi fs-5 me-2 ${
+              theme === "light" ? "bi-moon-fill" : "bi-sun-fill"
+            }`}
+          ></i>
+          {theme === "light" ? "Dark" : "Light"}
         </Button>
       </div>
 
@@ -110,23 +120,32 @@ export function App() {
         Add New Item
       </Button>
 
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>List Of New Items</h1>
-        <Button onClick={loadItems} disabled={loading}>
-          {loading ? "Loading..." : "Load Items"}
-        </Button>
-      </div>
-
-      <div className="row">
-        {items.map((item) => (
+      {loading ? (
+        <div className="text-center">
           <div
-            key={item.id}
-            className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex"
+            className="spinner-grow"
+            style={{width: "3rem", height: "3rem"}}
+            role="status"
           >
-            <ItemCard item={item} onEdit={handleEdit} onDelete={handleDelete} theme={theme}/>
           </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="row">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex"
+            >
+              <ItemCard
+                item={item}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                theme={theme}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       <ItemModal
         show={showModal}
