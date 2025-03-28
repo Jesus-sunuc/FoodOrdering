@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class Item(BaseModel):
     id: str
-    title: str
+    item_name: str
     description: str
-    image: str
     price: float
+    image_url: str
