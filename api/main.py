@@ -7,7 +7,7 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "Hello from Azure! 🎉"}
+    return {"message": "Hello from Azure!"}
 
 
 origins = [
