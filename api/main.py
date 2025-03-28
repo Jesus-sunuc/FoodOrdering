@@ -9,6 +9,7 @@ app = FastAPI()
 def root():
     return {"message": "Hello from Azure! 🎉"}
 
+
 origins = [
     "https://yellow-island-0e74ba610.6.azurestaticapps.net/",
     "http://localhost:5173",
