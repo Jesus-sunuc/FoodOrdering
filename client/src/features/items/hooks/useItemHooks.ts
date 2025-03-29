@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { itemService } from "../services/itemService";
 // import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { itemService } from "../services/itemService";
 
 export const useGetItemsQuery = () =>
   useQuery({ queryKey: ["items"], queryFn: itemService.getItems });
