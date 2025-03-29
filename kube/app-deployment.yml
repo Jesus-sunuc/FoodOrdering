@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: lunchbox
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: jesus6190/lunchbox:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_CONN
+          # valueFrom:
+            # secretKeyRef:
+              # name: db-secret
+              # key: DB_CONN
