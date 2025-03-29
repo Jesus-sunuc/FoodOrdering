@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import ItemCard from "./components/ItemCard";
 import toast, { Toaster } from "react-hot-toast";
 import { Button, Container } from "react-bootstrap";
-import ItemModal from "./components/ItemModal";
+import "./App.css";
 import { Item } from "./features/items/types/Item";
 import { itemService } from "./features/items/services/itemService";
-import "./App.css";
+import ItemCard from "./components/ItemCArd";
+import ItemModal from "./components/ItemModal";
 
 export function App() {
   const [items, setItems] = useState<Item[]>([]);
