@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@tanstack/react-query": "^5.69.0",
-    "axios": "^1.8.4",
-    "bootstrap": "^5.3.3",
-    "bootstrap-icons": "^1.11.3",
-    "react-router-dom": "^7.4.0"
-  }
-}
