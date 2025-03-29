@@ -123,11 +123,10 @@ export function App() {
       {loading ? (
         <div className="text-center">
           <div
-            className="spinner-grow"
-            style={{width: "3rem", height: "3rem"}}
+            className="spinner-border text-success"
+            style={{ width: "3rem", height: "3rem" }}
             role="status"
-          >
-          </div>
+          ></div>
         </div>
       ) : (
         <div className="row">
