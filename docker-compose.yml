@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_CONN=Host=mypg;Port=5432;User id=postgres;Password=password;Database=mypg
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    environment:
+      DB_CONN: Host=mypg;Port=5432;User id=postgres;Password=password;Database=mypg
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+volumes:
+  pgdata:
