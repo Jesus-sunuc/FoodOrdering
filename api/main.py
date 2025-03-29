@@ -26,4 +26,3 @@ app.add_middleware(
 router = APIRouter(prefix="/api")
 
 app.include_router(item_router, prefix="/api")
-
