@@ -4,7 +4,7 @@ import { Button, Container } from "react-bootstrap";
 import "./App.css";
 import { Item } from "./features/items/types/Item";
 import { itemService } from "./features/items/services/itemService";
-import ItemCard from "./components/ItemCArd";
+import ItemCard from "./components/ItemCard";
 import ItemModal from "./components/ItemModal";
 
 export function App() {
