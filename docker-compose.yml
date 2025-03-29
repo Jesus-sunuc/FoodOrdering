@@ -1,5 +1,6 @@
 services:
-  app:
+  client:
+    container_name: lunch_box_client
     build:
       context: .
       dockerfile: Dockerfile
