@@ -1,25 +1,43 @@
 services:
-  client:
-    container_name: lunch_box_client
+  backend:
     build:
-      context: .
+      context: ./api
       dockerfile: Dockerfile
+    container_name: fastapi-backend
     ports:
       - "8000:8000"
-    environment:
-      - DB_CONN=Host=mypg;Port=5432;User id=postgres;Password=password;Database=mypg
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/app
     depends_on:
-      - db
+      - client
+    restart: always
+  
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: react-frontend
+    ports:
+      - "5173:4173"
+    stdin_open: true
+    tty: true
+    restart: always
+
   db:
     image: postgres:latest
+    container_name: db-postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
     environment:
-      DB_CONN: Host=mypg;Port=5432;User id=postgres;Password=password;Database=mypg
-      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: CodingIsASuperpower!
+      POSTGRES_DB: app_admin
+      pgdata: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - "5433:5432"
 volumes:
   pgdata:
