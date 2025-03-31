@@ -5,7 +5,7 @@ metadata:
   namespace: lunchbox
 spec:
   rules:
-    - host: # set after hosted on class server
+    - host: lunchbox6.duckdns.org
       http:
         paths:
           - path: /
