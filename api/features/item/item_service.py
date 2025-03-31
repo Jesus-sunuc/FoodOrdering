@@ -12,7 +12,7 @@ class ItemService:
 
     def add_item(self, item: Item):
         return self.repo.add(item)
-    
+
     def update_item(self, item: Item):
         return self.repo.update(item)
 

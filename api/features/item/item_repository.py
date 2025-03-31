@@ -13,7 +13,7 @@ class ItemRepository:
         rows = cursor.fetchall()
         cursor.close()
         return rows
-    
+
     def add(self, item: Item):
         cursor = self.db.cursor()
         cursor.execute(
@@ -25,7 +25,7 @@ class ItemRepository:
         )
         self.db.commit()
         cursor.close()
-        
+
     def update(self, item: Item):
         cursor = self.db.cursor()
         cursor.execute(
