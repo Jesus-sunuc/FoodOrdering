@@ -103,7 +103,7 @@ export function App() {
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-3 mt-4">
         {/* <h1>Add New Product</h1> */}
-        <Button variant="success" className="mb-4" onClick={handleAddNew}>
+        <Button variant="success" onClick={handleAddNew}>
           Add New Item
         </Button>
         <Button
