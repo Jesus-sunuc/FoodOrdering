@@ -12,6 +12,7 @@ const Toast = forwardRef<HTMLDivElement, Props>(({ message }, ref) => (
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
+      
     >
       <div className="d-flex">
         <div className="toast-body">{message}</div>

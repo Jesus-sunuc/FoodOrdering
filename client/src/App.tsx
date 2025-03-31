@@ -101,8 +101,11 @@ export function App() {
 
   return (
     <Container className="py-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>Add New Product</h1>
+      <div className="d-flex justify-content-between align-items-center mb-3 mt-4">
+        {/* <h1>Add New Product</h1> */}
+        <Button variant="success" className="mb-4" onClick={handleAddNew}>
+          Add New Item
+        </Button>
         <Button
           variant={theme === "light" ? "dark" : "light"}
           onClick={toggleTheme}
@@ -117,9 +120,6 @@ export function App() {
       </div>
 
       <Toaster />
-      <Button variant="success" className="mb-4" onClick={handleAddNew}>
-        Add New Item
-      </Button>
 
       {isLoading ? (
         <div className="text-center">
