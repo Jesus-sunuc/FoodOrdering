@@ -33,9 +33,9 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: app_admin
+      POSTGRES_PASSWORD: CodingIsASuperpower!
+      POSTGRES_DB: postgres
       pgdata: /var/lib/postgresql/data/pgdata
     ports:
       - "5433:5432"

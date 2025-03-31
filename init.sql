@@ -1,3 +1,4 @@
+-- docker exec -it db-postgres psql -U app_admin -d postgres
 -- DROP SCHEMA lunch_box;
  
 CREATE SCHEMA lunch_box;
