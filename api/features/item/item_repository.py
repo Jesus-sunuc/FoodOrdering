@@ -14,7 +14,7 @@ class ItemRepository:
         cursor.close()
         return rows
 
-    def add(self, item: Item):
+    def add_item(self, item: Item):
         cursor = self.db.cursor()
         cursor.execute(
             """
@@ -26,7 +26,7 @@ class ItemRepository:
         self.db.commit()
         cursor.close()
 
-    def update(self, item: Item):
+    def update_item(self, item: Item):
         cursor = self.db.cursor()
         cursor.execute(
             """
@@ -39,7 +39,7 @@ class ItemRepository:
         self.db.commit()
         cursor.close()
 
-    def delete(self, item_id: str):
+    def delete_item(self, item_id: str):
         cursor = self.db.cursor()
         cursor.execute("DELETE FROM lunch_box.item WHERE id = %s", (item_id,))
         self.db.commit()

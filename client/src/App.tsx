@@ -16,9 +16,8 @@ export function App() {
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<Item | undefined>(undefined);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+
   const { data: items = [], isLoading } = useGetItemsQuery();
-
-
   const addItemMutation = useAddItemMutation();
   const updateItemMutation = useUpdateItemMutation();
   const deleteItemMutation = useDeleteItemMutation();
