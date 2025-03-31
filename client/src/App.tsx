@@ -4,30 +4,27 @@ import toast, { Toaster } from "react-hot-toast";
 import { Button, Container } from "react-bootstrap";
 import ItemModal from "./components/ItemModal";
 import { Item } from "./features/items/types/Item";
-import { itemService } from "./features/items/services/itemService";
 import "./App.css";
+import {
+  useAddItemMutation,
+  useDeleteItemMutation,
+  useGetItemsQuery,
+  useUpdateItemMutation,
+} from "./features/items/hooks/useItemHooks";
 
 export function App() {
-  const [items, setItems] = useState<Item[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<Item | undefined>(undefined);
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [loading, setLoading] = useState(false);
+  const { data: items = [], isLoading } = useGetItemsQuery();
+
+
+  const addItemMutation = useAddItemMutation();
+  const updateItemMutation = useUpdateItemMutation();
+  const deleteItemMutation = useDeleteItemMutation();
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
-
-  const loadItems = async () => {
-    try {
-      setLoading(true);
-      const data = await itemService.getItems();
-      setItems(data);
-    } catch (error) {
-      console.error("Error loading items:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleAddNew = () => {
@@ -36,13 +33,19 @@ export function App() {
   };
 
   const handleSave = (item: Item) => {
-    setItems((prev) => {
-      const exists = prev.find((i) => i.id === item.id);
-      if (exists) {
-        return prev.map((i) => (i.id === item.id ? item : i));
-      }
-      return [...prev, item];
-    });
+    const exists = items.find((i) => i.id === item.id);
+
+    if (exists) {
+      updateItemMutation.mutate(item, {
+        onSuccess: () => toast.success("Item updated!"),
+        onError: () => toast.error("Failed to update item"),
+      });
+    } else {
+      addItemMutation.mutate(item, {
+        onSuccess: () => toast.success("Item added!"),
+        onError: () => toast.error("Failed to add item"),
+      });
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -53,7 +56,10 @@ export function App() {
           variant="danger"
           size="sm"
           onClick={() => {
-            setItems((prev) => prev.filter((item) => item.id !== id));
+            deleteItemMutation.mutate(id, {
+              onSuccess: () => toast.success("Item deleted"),
+              onError: () => toast.error("Failed to delete"),
+            });
             toast.dismiss(t.id);
           }}
         >
@@ -94,10 +100,6 @@ export function App() {
       theme === "dark" ? "custom-dark" : "bg-light text-dark";
   }, [theme]);
 
-  useEffect(() => {
-    loadItems();
-  }, []);
-
   return (
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -120,7 +122,7 @@ export function App() {
         Add New Item
       </Button>
 
-      {loading ? (
+      {isLoading ? (
         <div className="text-center">
           <div
             className="spinner-border text-success"

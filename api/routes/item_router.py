@@ -9,17 +9,14 @@ router = APIRouter(prefix="/items", tags=["Items"])
 def get_items(service: ItemService = Depends()):
     return service.get_items()
 
+@router.post("")
+def add_item(item: Item, service: ItemService = Depends()):
+    return service.add_item(item)
 
-# @router.post("")
-# def add_item(item: Item, service: ItemService = Depends()):
-#     return service.add_item(item)
+@router.put("/{item_id}")
+def update_item(item_id: str, item: Item, service: ItemService = Depends()):
+    return service.update_item(item)
 
-
-# @router.put("/{id}")
-# def update_item(id: str, item: Item, service: ItemService = Depends()):
-#     return service.update_item(item)
-
-
-# @router.delete("/{id}")
-# def delete_item(id: str, service: ItemService = Depends()):
-#     return service.delete_item(id)
+@router.delete("/{item_id}")
+def delete_item(item_id: str, service: ItemService = Depends()):
+    return service.delete_item(item_id)

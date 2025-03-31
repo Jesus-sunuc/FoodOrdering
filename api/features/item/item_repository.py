@@ -13,21 +13,34 @@ class ItemRepository:
         rows = cursor.fetchall()
         cursor.close()
         return rows
+    
+    def add(self, item: Item):
+        cursor = self.db.cursor()
+        cursor.execute(
+            """
+            INSERT INTO lunch_box.item (item_name, description, price, image_url)
+            VALUES (%s, %s, %s, %s)
+            """,
+            (item.item_name, item.description, item.price, item.image_url),
+        )
+        self.db.commit()
+        cursor.close()
+        
+    def update(self, item: Item):
+        cursor = self.db.cursor()
+        cursor.execute(
+            """
+            UPDATE lunch_box.item
+            SET item_name=%s, description=%s, price=%s, image_url=%s
+            WHERE id=%s
+            """,
+            (item.item_name, item.description, item.price, item.image_url, item.id),
+        )
+        self.db.commit()
+        cursor.close()
 
-    # def add(self, item: Item):
-    #     self.db.execute(
-    #         "INSERT INTO lunch_box.item (item_name, description, price, image_url) VALUES (?, ?, ?, ?)",
-    #         (item.item_name, item.description, item.price, item.image_url),
-    #     )
-    #     self.db.commit()
-
-    # def update(self, item: Item):
-    #     self.db.execute(
-    #         "UPDATE lunch_box.item SET item_name=?, description=?, price=?, image_url=? WHERE id=?",
-    #         (item.item_name, item.description, item.price, item.image_url, item.id),
-    #     )
-    #     self.db.commit()
-
-    # def delete(self, id: str):
-    #     self.db.execute("DELETE FROM items WHERE id=?", (id,))
-    #     self.db.commit()
+    def delete(self, item_id: str):
+        cursor = self.db.cursor()
+        cursor.execute("DELETE FROM lunch_box.item WHERE id = %s", (item_id,))
+        self.db.commit()
+        cursor.close()
