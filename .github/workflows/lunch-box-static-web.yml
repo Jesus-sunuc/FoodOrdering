@@ -33,7 +33,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "client"
-          app_artifact_location: "client/dist"
+          app_artifact_location: "dist"
         
 
   close_pull_request_job:
