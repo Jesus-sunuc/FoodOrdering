@@ -32,7 +32,7 @@ export function App() {
   };
 
   const handleSave = (item: Item) => {
-    const exists = items.find((i) => i.id === item.id);
+    const exists = items.find((i: Item) => i.id === item.id);
 
     if (exists) {
       updateItemMutation.mutate(item, {
@@ -131,7 +131,7 @@ export function App() {
         </div>
       ) : (
         <div className="row">
-          {items.map((item) => (
+          {items.map((item: Item) => (
             <div
               key={item.id}
               className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex"
