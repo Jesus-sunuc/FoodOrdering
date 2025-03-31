@@ -2,3 +2,4 @@ config/
 bin/
 obj/
 .config/
+node_modules/
