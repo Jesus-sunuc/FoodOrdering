@@ -9,10 +9,6 @@ COPY . .
 
 RUN npm run build
 
-# Serve the build
-FROM node:20-alpine
-WORKDIR /app
-
-RUN npm install -g serve
-COPY --from=builder /app/dist .
-CMD ["serve", "-s", ".", "-l", "4173"]
+FROM nginx
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
