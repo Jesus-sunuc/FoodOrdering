@@ -34,32 +34,46 @@ jobs:
           action: "upload"
           app_location: "client"
           app_artifact_location: "dist"
-        
-  deploy_to_kubernetes:
-    runs-on: ubuntu-latest
-    name: Deploy to Kubernetes
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+  deploy-kubernetes_app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
-      - name: Build and Push Docker Images
-        uses: docker/build-push-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
         with:
-          context: .
-          push: true
-          tags: |
-            jesus6190/lunchbox_client:latest
-            jesus6190/lunchbox_api:latest
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./client
+          file: ./client/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/lunch-box-web:latest
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      # - name: Set up Kubeconfig
+      #   run: |
+      #     mkdir -p ~/.kube
+      #     echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f ./kube/app-deployment.yml
+          kubectl apply -f ./kube/app-svc.yml    
+          kubectl apply -f ./kube/app-ingress.yml    
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
