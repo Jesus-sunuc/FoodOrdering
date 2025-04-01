@@ -51,8 +51,8 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           cd client
-          docker build -t jesus6190/lunchbox_client:latest .
-          docker push jesus6190/lunchbox_client:latest
+          docker build -t jesus6190/lunchbox_client:${{github.run_number}} .
+          docker push jesus6190/lunchbox_client:${{github.run_number}}
 
       - name: Deploy to Kubernetes
         run: |

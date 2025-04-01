@@ -10,7 +10,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "HOST=0.0.0.0 react-scripts start"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.70.0",
