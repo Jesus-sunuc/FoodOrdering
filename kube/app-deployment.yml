@@ -19,9 +19,9 @@ spec:
     spec:
       containers:
       - name: app
-        image: jesus6190/lunchbox_client:5
+        image: jesus6190/lunchbox_client:6
         ports:
-        - containerPort: 4173
+        - containerPort: 80
         env:
         - name: DB_CONN
           # valueFrom:
