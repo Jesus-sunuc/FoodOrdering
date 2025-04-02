@@ -6,6 +6,8 @@ from services.database.connection import get_db_connection
 from main import app
 
 client = TestClient(app)
+
+
 class Item(BaseModel):
     id: str
     title: str
@@ -67,11 +69,12 @@ def test_add_item():
         "item_name": "Test Sandwich",
         "description": "Just a test",
         "price": 4.50,
-        "image_url": "https://example.com/test.jpg"
+        "image_url": "https://example.com/test.jpg",
     }
 
     response = client.post("api/items", json=new_item)
     assert response.status_code == 200 or response.status_code == 201
+
 
 def test_update_item():
     updated_data = {
@@ -79,11 +82,12 @@ def test_update_item():
         "item_name": "Updated Toast",
         "description": "Updated desc",
         "price": 7.25,
-        "image_url": "https://example.com/updated.jpg"
+        "image_url": "https://example.com/updated.jpg",
     }
 
     response = client.put(f"api/items/7", json=updated_data)
     assert response.status_code == 200
+
 
 def test_delete_item():
     item_id = "7"
