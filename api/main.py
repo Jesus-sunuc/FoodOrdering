@@ -4,16 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-
 @app.get("/")
 def root():
     return {"message": "Hello from Azure!"}
-
-
-# origins = [
-#     "https://yellow-island-0e74ba610.6.azurestaticapps.net",
-#     "http://localhost:5173",
-# ]
 
 origins = [
     "http://localhost:4173",
