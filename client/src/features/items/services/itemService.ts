@@ -4,16 +4,16 @@ import { Item } from "../types/Item";
 
 export const itemService = {
   async getItems(): Promise<Item[]> {
-    const res = await axiosClient.get("/items");
+    const res = await axiosClient.get("/api/items");
     return res.data;
   },
   async addItem(item: Item): Promise<void> {
-    await axiosClient.post("/items", item);
+    await axiosClient.post("/api/items", item);
   },
   async updateItem(item: Item): Promise<void> {
-    await axiosClient.put(`/items/${item.id}`, item);
+    await axiosClient.put(`/api/items/${item.id}`, item);
   },
   async deleteItem(id: string): Promise<void> {
-    await axiosClient.delete(`/items/${id}`);
+    await axiosClient.delete(`/api/items/${id}`);
   },
 };
