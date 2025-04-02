@@ -16,7 +16,7 @@ def root():
 # ]
 
 origins = [
-    "http://localhost:5173",
+    "http://localhost:4173",
     "http://lunchbox6.duckdns.org",
     "https://yellow-island-0e74ba610.6.azurestaticapps.net",
 ]
