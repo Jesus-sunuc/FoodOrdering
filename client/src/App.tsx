@@ -81,6 +81,9 @@ export function App() {
     setShowModal(true);
   };
 
+  // const notAdmin = import.meta.env.VITE_ENV_NOT_ADMIN === "true";
+  // console.log(import.meta.env.VITE_ENV_NOT_ADMIN);
+
   useEffect(() => {
     document.body.className =
       theme === "dark" ? "custom-dark" : "bg-light text-dark";
@@ -104,6 +107,7 @@ export function App() {
       <div className="d-flex justify-content-between align-items-center mb-3 mt-4">
         {/* <h1>Add New Product</h1> */}
         <Button variant="success" onClick={handleAddNew}>
+        {/* <Button hidden={notAdmin} variant="success" onClick={handleAddNew}> */}
           Add New Item
         </Button>
         <Button
