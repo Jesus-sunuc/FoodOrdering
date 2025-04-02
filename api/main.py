@@ -10,10 +10,17 @@ def root():
     return {"message": "Hello from Azure!"}
 
 
+# origins = [
+#     "https://yellow-island-0e74ba610.6.azurestaticapps.net",
+#     "http://localhost:5173",
+# ]
+
 origins = [
-    "https://yellow-island-0e74ba610.6.azurestaticapps.net",
     "http://localhost:5173",
+    "http://lunchbox6.duckdns.org",
+    "https://yellow-island-0e74ba610.6.azurestaticapps.net",
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
