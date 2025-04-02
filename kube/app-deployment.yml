@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: jesus6190/lunchbox_client:52
+        image: jesus6190/lunchbox_client:59
         ports:
         - containerPort: 4173
         env:
@@ -28,5 +28,3 @@ spec:
             # secretKeyRef:
               # name: db-secret
               # key: DB_CONN
-        # - name: VITE_ENV_NOT_ADMIN
-        #   value: "true"
