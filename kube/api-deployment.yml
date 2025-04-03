@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: jesus6190/lunchbox_api:7
+        image: sarahstrawberries/lunchbox_api:7
         ports:
         - containerPort: 8000
         readinessProbe:
@@ -31,6 +31,7 @@ spec:
           #   - cat
           #   - /tmp/healthy
           initialDelaySeconds: 60
+
           periodSeconds: 10
         livenessProbe:
           httpGet:
