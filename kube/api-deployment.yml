@@ -30,8 +30,8 @@ spec:
           #   command:
           #   - cat
           #   - /tmp/healthy
-          initialDelaySeconds: 60
-
+          initialDelaySeconds: 15
+          failureThreshold: 10
           periodSeconds: 10
         livenessProbe:
           httpGet:
@@ -41,7 +41,8 @@ spec:
           #   command:
           #   - cat
           #   - /tmp/healthy
-          initialDelaySeconds: 60
+          initialDelaySeconds: 5
+          failureThreshold: 10
           periodSeconds: 5
         env:
         - name: DB_CONN
