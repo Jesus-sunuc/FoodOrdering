@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
   - name: liveness
-    image: sarahstrawberries/lunchbox_api:53
+    image: sarahstrawberries/lunchbox_api:59
     args:
     - /bin/sh
     - -c
