@@ -12,7 +12,7 @@ def root():
 
 @app.get("/health")
 def health_check():
-    return True
+    return {"status": "ok"}
 
 
 origins = [
