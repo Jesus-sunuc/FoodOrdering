@@ -23,7 +23,7 @@ spec:
         ports:
         - containerPort: 8000
         readinessProbe:
-          httpGet:
+          httpsGet:
             path: /api
             port: 8000
           # exec:
@@ -34,7 +34,7 @@ spec:
           failureThreshold: 10
           periodSeconds: 10
         livenessProbe:
-          httpGet:
+          httpsGet:
             path: /api
             port: 8000
           # exec:
