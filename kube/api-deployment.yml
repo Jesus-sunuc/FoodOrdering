@@ -26,20 +26,20 @@ spec:
           httpGet:
             path: /api
             port: 8000
-          exec:
-            command:
-            - cat
-            - /tmp/healthy
+          # exec:
+          #   command:
+          #   - cat
+          #   - /tmp/healthy
           initialDelaySeconds: 15
           periodSeconds: 10
         livenessProbe:
           httpGet:
             path: /api
             port: 8000
-          exec:
-            command:
-            - cat
-            - /tmp/healthy
+          # exec:
+          #   command:
+          #   - cat
+          #   - /tmp/healthy
           initialDelaySeconds: 5
           periodSeconds: 5
         env:
