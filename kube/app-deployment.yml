@@ -23,20 +23,20 @@ spec:
         ports:
         - containerPort: 4173
         readinessProbe:
-          httpGet:
+          # httpGet:
+          exec:
             path: /
             port: 4173
-          exec:
             command:
             - cat
             - /tmp/healthy
           initialDelaySeconds: 15
           periodSeconds: 10
         livenessProbe:
-          httpGet:
+          # httpGet:
+          exec:
             path: /
             port: 4173
-          exec:
             command:
             - cat
             - /tmp/healthy
