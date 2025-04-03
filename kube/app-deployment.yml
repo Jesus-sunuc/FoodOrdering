@@ -22,6 +22,20 @@ spec:
         image: jesus6190/lunchbox_client:59
         ports:
         - containerPort: 4173
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 5
+          periodSeconds: 5
         env:
         - name: DB_CONN
           # valueFrom:
