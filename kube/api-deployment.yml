@@ -23,6 +23,9 @@ spec:
         ports:
         - containerPort: 8000
         readinessProbe:
+          httpGet:
+            path: /api
+            port: 8000
           exec:
             command:
             - cat
@@ -30,6 +33,9 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 10
         livenessProbe:
+          httpGet:
+            path: /api
+            port: 8000
           exec:
             command:
             - cat
