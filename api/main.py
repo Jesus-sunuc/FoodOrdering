@@ -9,6 +9,7 @@ app = FastAPI()
 def root():
     return {"message": "Hello from Azure!"}
 
+
 @app.get("/health")
 def health_check():
     return True
