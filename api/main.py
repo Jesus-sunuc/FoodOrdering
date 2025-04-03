@@ -10,7 +10,7 @@ def root():
     return {"message": "Hello from Azure!"}
 
 
-@app.get("/health")
+@app.get("/api/health")
 def health_check():
     return True
 
