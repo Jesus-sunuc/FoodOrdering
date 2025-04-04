@@ -6,13 +6,16 @@ app = FastAPI()
 
 api_router = APIRouter(prefix="/api")
 
+
 @api_router.get("/")
 def root():
     return {"message": "Hello from Azure!"}
 
+
 @api_router.get("/health")
 def health_check():
     return {"status": "Healthy"}
+
 
 api_router.include_router(item_router)
 
