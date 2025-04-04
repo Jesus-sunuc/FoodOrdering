@@ -19,32 +19,32 @@ spec:
     spec:
       containers:
       - name: app
-        image: jesus6190/lunchbox_client:59
+        image: jesus6190/lunchbox_client:77
         ports:
         - containerPort: 4173
+
         readinessProbe:
           httpGet:
             path: /
             port: 4173
-          # exec:
-          #   command:
-          #   - cat
-          #   - /tmp/healthy
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          failureThreshold: 3
+
         livenessProbe:
           httpGet:
             path: /
             port: 4173
-          # exec:
-          #   command:
-          #   - cat
-          #   - /tmp/healthy
-          initialDelaySeconds: 60
+          initialDelaySeconds: 20
           periodSeconds: 5
+          failureThreshold: 3
+        
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
         env:
         - name: DB_CONN
-          # valueFrom:
-            # secretKeyRef:
-              # name: db-secret
-              # key: DB_CONN

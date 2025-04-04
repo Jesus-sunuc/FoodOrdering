@@ -19,31 +19,33 @@ spec:
     spec:
       containers:
       - name: api
-        image: sarahstrawberries/lunchbox_api:8
+        image: jesus6190/lunchbox_api:78
         ports:
         - containerPort: 8000
+
         readinessProbe:
           httpGet:
-            path: /health
+            path: /api/health
             port: 8000
-          # exec:
-          #   command:
-          #   - cat
-          #   - /tmp/healthy
-          initialDelaySeconds: 15
-          failureThreshold: 10
-          periodSeconds: 10
+          initialDelaySeconds: 10
+          failureThreshold: 5
+          periodSeconds: 3
+
         livenessProbe:
           httpGet:
-            path: /health
+            path: /api/health
             port: 8000
-          # exec:
-          #   command:
-          #   - cat
-          #   - /tmp/healthy
-          initialDelaySeconds: 5
-          failureThreshold: 10
-          periodSeconds: 5
+          initialDelaySeconds: 15
+          failureThreshold: 5
+          periodSeconds: 3
+
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"  
         env:
         - name: DB_CONN
           valueFrom:
