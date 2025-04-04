@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Image } from "react-bootstrap";
 import { Item } from "../features/items/types/Item";
 import "../App.css";
@@ -37,16 +37,6 @@ const ItemModal: React.FC<ItemModalProps> = ({
     }
   }, [initialData]);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSave = () => {
     const newItem: Item = {
@@ -101,12 +91,11 @@ const ItemModal: React.FC<ItemModalProps> = ({
             />
           </Form.Group>
           <Form.Group controlId="formImage" className="mt-2">
-            <Form.Label>Upload Image</Form.Label>
+            <Form.Label>Upload URL</Form.Label>
             <Form.Control
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
+              type="text"
+              accept="image"
+              onChange={(e) => setImage(e.target.value)}            />
           </Form.Group>
 
           {image && (
