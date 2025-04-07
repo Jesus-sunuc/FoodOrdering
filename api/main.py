@@ -24,7 +24,6 @@ app.include_router(api_router)
 origins = [
     "http://localhost:4173",
     "http://lunchbox6.duckdns.org",
-    "http://localhost:5173",
     "https://yellow-island-0e74ba610.6.azurestaticapps.net",
 ]
 
