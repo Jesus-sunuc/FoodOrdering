@@ -13,7 +13,7 @@ data:
 
     exporters:
       loki:
-        endpoint: "http://loki:3100/loki/api/v1/push"
+        endpoint: "http://lunchbox6.duckdns.org:3100/loki/api/v1/push"
 
     service:
       pipelines:
