@@ -1,7 +1,7 @@
 receivers:
   filelog:
     include:
-      - /var/log/api/*.log
+      - /var/log/app/*.log
     start_at: beginning
 
 exporters:

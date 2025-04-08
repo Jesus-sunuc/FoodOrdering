@@ -10,6 +10,15 @@ data:
         include:
           - /var/log/app/*.log
         start_at: beginning
+        operators:
+          - type: json_parser
+            timestamp:
+              parse_from: attributes.time
+              layout: '%Y-%m-%d %H:%M:%S,%f'
+            severity:
+              parse_from: attributes.level
+            attributes:
+              log_type: fastapi
 
     exporters:
       loki:
