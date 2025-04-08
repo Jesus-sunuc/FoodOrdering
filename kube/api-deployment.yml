@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: jesus6190/lunchbox_api:17
+        image: jesus6190/lunchbox_api:18
         ports:
         - containerPort: 8000
 
@@ -53,12 +53,3 @@ spec:
             secretKeyRef:
               name: db-secret
               key: DB_CONN
-
-        volumeMounts:
-          - name: shared-logs
-            mountPath: /var/log/app 
-
-      volumes:
-        - name: shared-logs
-          persistentVolumeClaim:
-            claimName: log-pvc

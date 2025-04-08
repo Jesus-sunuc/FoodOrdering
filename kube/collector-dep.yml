@@ -21,8 +21,8 @@ spec:
               mountPath: /etc/otel/otel-config.yaml
               subPath: otel-config.yaml
           ports:
-            - containerPort: 4317  # gRPC
-            - containerPort: 8889  # metrics/debug
+            - containerPort: 4317
+            - containerPort: 8889
       volumes:
         - name: config-volume
           configMap:
