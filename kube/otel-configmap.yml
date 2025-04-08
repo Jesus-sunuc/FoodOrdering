@@ -20,4 +20,4 @@ data:
       pipelines:
         logs:
           receivers: [otlp]
-          exporters: [loki, debug]
+          exporters: [loki]
