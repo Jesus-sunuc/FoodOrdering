@@ -18,16 +18,6 @@ logging.getLogger().addHandler(otel_handler)
 logging.getLogger().setLevel(logging.INFO)
               
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-              
-# FastAPI App
->>>>>>> 010983e4440fe49652da15bfd216a967ba6ba87c
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.item_router import router as item_router
