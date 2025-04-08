@@ -5,10 +5,10 @@ metadata:
   namespace: lunchbox
 spec:
   rules:
-    - host: lunchbox6.duckdns.org/api
+    - host: lunchbox6.duckdns.org
       http:
         paths:
-          - path: /
+          - path: /grafana
             pathType: Prefix
             backend:
               service:
