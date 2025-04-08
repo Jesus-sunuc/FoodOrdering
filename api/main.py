@@ -5,7 +5,7 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.item_router import router as item_router
 
-os.makedirs("/var/log/api", exist_ok=True)
+os.makedirs("/var/log/app", exist_ok=True)
 
 class JsonFormatter(logging.Formatter):
     def format(self, record):
@@ -19,7 +19,7 @@ class JsonFormatter(logging.Formatter):
 
 json_formatter = JsonFormatter()
 
-file_handler = logging.FileHandler("/var/log/api/fastapi.log")
+file_handler = logging.FileHandler("/var/log/app/fastapi.log")
 file_handler.setFormatter(json_formatter)
 
 stream_handler = logging.StreamHandler()

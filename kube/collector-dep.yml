@@ -19,6 +19,8 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/otel
+            - name: shared-logs
+              mountPath: /var/log/app
           ports:
             - containerPort: 4317
             - containerPort: 8889
@@ -26,3 +28,6 @@ spec:
         - name: config-volume
           configMap:
             name: otel-configmap
+        - name: shared-logs
+          persistentVolumeClaim:
+            claimName: log-pvc

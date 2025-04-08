@@ -45,10 +45,20 @@ spec:
             memory: "128Mi"
           limits:
             cpu: "250m"
-            memory: "256Mi"  
+            memory: "256Mi"
+
         env:
         - name: DB_CONN
           valueFrom:
             secretKeyRef:
               name: db-secret
               key: DB_CONN
+
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /var/log/app 
+
+      volumes:
+        - name: shared-logs
+          persistentVolumeClaim:
+            claimName: log-pvc
