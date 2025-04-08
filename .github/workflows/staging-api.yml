@@ -7,18 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  
-  setup_for_deployment:
+
+  build:
     runs-on: self-hosted
     steps:
       - name: Analyzing the code with black linting code
         run: |
           black --check .
-
-  build:
-    runs-on: self-hosted
-    # needs: setup_for_deployment
-    steps:
       - name: Checkout code
         uses: actions/checkout@v4 
 
