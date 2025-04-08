@@ -1,0 +1,17 @@
+receivers:
+  filelog:
+    include:
+      - /var/log/api/*.log
+    start_at: beginning
+
+exporters:
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      exporters: [loki, debug]

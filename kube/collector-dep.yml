@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector-dep
+  namespace: lunchbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector-dep
+  template:
+    metadata:
+      labels:
+        app: otel-collector-dep
+    spec:
+      containers:
+        - name: otel-collector-dep
+          image: otel/opentelemetry-collector-contrib:latest
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/otel
+          ports:
+            - containerPort: 4317
+            - containerPort: 8889
+      volumes:
+        - name: config-volume
+          configMap:
+            name: otel-configmap
