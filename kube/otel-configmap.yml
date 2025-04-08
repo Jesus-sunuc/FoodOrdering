@@ -10,16 +10,14 @@ data:
         protocols:
           grpc:
 
-    processors:
-      batch: {}
-
     exporters:
       loki:
         endpoint: "http://loki:3100/loki/api/v1/push"
+      debug:
+        verbosity: detailed
 
     service:
       pipelines:
         logs:
           receivers: [otlp]
-          processors: [batch]
-          exporters: [loki]
+          exporters: [loki, debug]
