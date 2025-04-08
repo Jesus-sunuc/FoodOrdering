@@ -40,7 +40,7 @@ jobs:
           curl -H "Content-Type: application/json" \
                -X POST \
                -d '{
-                 "content": "🚨 @everyone Build failed on **${{ github.repository }}** in branch `${{ github.ref_name }}`!\nCheck the run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                 "content": "🚨 @everyone Build failed on **${{ github.repository }}** in branch `${{ github.ref_name }}`!\nCheck the run: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}>"
                }' \
                "$DISCORD_WEBHOOK"
 
