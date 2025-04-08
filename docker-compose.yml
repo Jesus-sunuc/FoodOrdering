@@ -41,5 +41,36 @@ services:
       pgdata: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
+  
+  loki:
+    image: grafana/loki:latest
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./configs/promtail-config.yaml:/etc/promtail/config.yaml
+      - ./api:/var/log/api:ro  # Make sure FastAPI logs here
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+    restart: always
+
+
+  grafana:
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
+    image: grafana/grafana:latest
+    ports:
+      - "8899:3000"
+    volumes:
+      - ./configs/grafana-datasource.yml:/etc/grafana/provisioning/datasources/ds.yaml
+
+    depends_on:
+      - loki
+    restart: always
+
 volumes:
   pgdata:
