@@ -30,3 +30,19 @@ jobs:
             kubectl apply -f ./kube/app-deployment.yml
             kubectl apply -f ./kube/app-svc.yml        
             kubectl apply -f ./kube/app-ingress.yml 
+  # notify:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: failure()
+  #   steps:
+  #     - name: Send Discord Notification
+  #       env:
+  #         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #       run: |
+  #         curl -H "Content-Type: application/json" \
+  #              -X POST \
+  #              -d '{
+  #                "content": "🚨 Build failed on **${{ github.repository }}** in branch `${{ github.ref_name }}`!\nCheck the run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+  #              }' \
+  #              "$DISCORD_WEBHOOK"
+ 
