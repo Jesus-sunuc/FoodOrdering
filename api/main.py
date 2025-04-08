@@ -16,7 +16,7 @@ provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 otel_handler = LoggingHandler(level=logging.INFO, logger_provider=provider)
 logging.getLogger().addHandler(otel_handler)
 logging.getLogger().setLevel(logging.INFO)
-              
+
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
