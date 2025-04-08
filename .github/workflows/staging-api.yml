@@ -11,15 +11,6 @@ jobs:
   setup_for_deployment:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Analyzing the code with black linting code
         run: |
           black --check .
@@ -28,6 +19,14 @@ jobs:
     runs-on: self-hosted
     # needs: setup_for_deployment
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and Push Docker Image
         run: |
           cd api
