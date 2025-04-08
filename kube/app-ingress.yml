@@ -15,6 +15,7 @@ spec:
                 name:  app
                 port:
                   number: 80
+                  
           - path: /api
             pathType: Prefix
             backend:
@@ -23,4 +24,11 @@ spec:
                 port:
                   number: 8090
 
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
 

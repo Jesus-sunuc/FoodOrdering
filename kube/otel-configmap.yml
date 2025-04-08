@@ -6,22 +6,17 @@ metadata:
 data:
   otel-config.yaml: |
     receivers:
-      otlp:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:4317
+      filelog:
+        include:
+          - /var/log/app/*.log
+        start_at: beginning
 
-    # exporters:
-    #   prometheus:
-    #     endpoint: "0.0.0.0:8889"
-    #   otlphttp:  # Use OTLP to send logs instead
-    #     endpoint: "http://loki:3100/otlp"
+    exporters:
+      loki:
+        endpoint: "http://loki:3100/loki/api/v1/push"
 
     service:
       pipelines:
-        # metrics:
-        #   receivers: [otlp]
-        #   exporters: [prometheus]
         logs:
-          receivers: [otlp]
-          exporters: [otlphttp]
+          receivers: [filelog]
+          exporters: [loki]
