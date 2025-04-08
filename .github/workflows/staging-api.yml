@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy_api_staging:
+  
+  setup_for_deployment:
     runs-on: self-hosted
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4  
@@ -20,12 +20,40 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Analyzing the code with black linting code
+        run: |
+          black --check .
+
+  build:
+    runs-on: self-hosted
+    # needs: setup_for_deployment
+    steps:
       - name: Build and Push Docker Image
         run: |
           cd api
           docker build -t jesus6190/lunchbox_api:${{github.run_number}} .
           docker push jesus6190/lunchbox_api:${{github.run_number}}
 
+  notify:
+    runs-on: ubuntu-latest
+    needs: build
+    if: failure()
+    steps:
+      - name: Send Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "content": "🚨 @everyone Build failed on **${{ github.repository }}** in branch `${{ github.ref_name }}`!\nCheck the run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+               }' \
+               "$DISCORD_WEBHOOK"
+
+  deploy_to_kubernetes:
+    runs-on: self-hosted
+    # setup_for_deployment: notify
+    steps:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f ./kube/api-deployment.yml
