@@ -1,4 +1,3 @@
-# log-pvc.yml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

@@ -1,58 +1,49 @@
-import json
 import logging
-import os
+
+from opentelemetry import logs
+from opentelemetry.sdk.logs import LoggerProvider, LoggingHandler
+from opentelemetry.sdk.logs.export import OTLPLogExporter, BatchLogRecordProcessor
+from opentelemetry.sdk.resources import Resource
+
+resource = Resource(attributes={"service.name": "fastapi-backend"})
+
+logs.set_logger_provider(LoggerProvider(resource=resource))
+logger_provider = logs.get_logger_provider()
+
+exporter = OTLPLogExporter(
+    endpoint="http://otel-collector-service.lunchbox.svc.cluster.local:4317",
+    insecure=True,
+)
+
+logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
+otel_handler = LoggingHandler(level=logging.INFO, logger_provider=logger_provider)
+logging.getLogger().addHandler(otel_handler)
+logging.getLogger().setLevel(logging.INFO)
+
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.item_router import router as item_router
 
-os.makedirs("/var/log/app", exist_ok=True)
-
-class JsonFormatter(logging.Formatter):
-    def format(self, record):
-        log_record = {
-            "time": self.formatTime(record, self.datefmt),
-            "level": record.levelname,
-            "message": record.getMessage(),
-            "logger": record.name,
-        }
-        return json.dumps(log_record)
-
-json_formatter = JsonFormatter()
-
-file_handler = logging.FileHandler("/var/log/app/fastapi.log")
-file_handler.setFormatter(json_formatter)
-
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(json_formatter)
-
-logging.basicConfig(
-    level=logging.INFO,
-    handlers=[file_handler, stream_handler]
-)
-
-logger = logging.getLogger(__name__)
-logger.info("FastAPI application started.")
-
 app = FastAPI()
-
 api_router = APIRouter(prefix="/api")
+
 
 @api_router.get("/")
 def root():
-    logger.info("Root endpoint hit")
+    logging.getLogger(__name__).info("Hit root endpoint")
     return {"message": "Hello from Azure!"}
+
 
 @api_router.get("/health")
 def health_check():
-    logger.info("Health check endpoint hit")
+    logging.getLogger(__name__).info("Health check pinged")
     return {"status": "Healthy"}
 
 
-
 api_router.include_router(item_router)
-
 app.include_router(api_router)
 
+# CORS
 origins = [
     "http://localhost:4173",
     "http://lunchbox6.duckdns.org",

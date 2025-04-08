@@ -18,16 +18,12 @@ spec:
           image: otel/opentelemetry-collector-contrib:latest
           volumeMounts:
             - name: config-volume
-              mountPath: /etc/otel
-            - name: shared-logs
-              mountPath: /var/log/app
+              mountPath: /etc/otel/otel-config.yaml
+              subPath: otel-config.yaml
           ports:
-            - containerPort: 4317
-            - containerPort: 8889
+            - containerPort: 4317  # gRPC
+            - containerPort: 8889  # metrics/debug
       volumes:
         - name: config-volume
           configMap:
             name: otel-configmap
-        - name: shared-logs
-          persistentVolumeClaim:
-            claimName: log-pvc
