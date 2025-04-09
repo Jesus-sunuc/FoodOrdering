@@ -25,14 +25,13 @@ spec:
                 port:
                   number: 8090
           
-          - path: /prometheus
+          - path: /zipkin
             pathType: Prefix
             backend:
               service:
-                name: prometheus
+                name: zipkin
                 port:
-                  number: 9090
-
+                  number: 9411
 
           - path: /grafana
             pathType: Prefix

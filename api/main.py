@@ -32,10 +32,20 @@ request_counter = meter.create_counter(
 )
 
 # --- Tracing ---
+# trace.set_tracer_provider(TracerProvider(resource=resource))
+# tracer_provider = trace.get_tracer_provider()
+# tracer_exporter = OTLPSpanExporter(endpoint="http://otel-collector:4317", insecure=True)
+# tracer_provider.add_span_processor(BatchSpanProcessor(tracer_exporter))
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
-tracer_exporter = OTLPSpanExporter(endpoint="http://otel-collector:4317", insecure=True)
-tracer_provider.add_span_processor(BatchSpanProcessor(tracer_exporter))
+tracer_provider.add_span_processor(
+    BatchSpanProcessor(
+        OTLPSpanExporter(
+            endpoint="http://otel-collector.lunchbox.svc.cluster.local:4317",
+            insecure=True,
+        )
+    )
+)
 
 # --- Metrics ---
 metric_exporter = OTLPMetricExporter(
