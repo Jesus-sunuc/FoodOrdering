@@ -41,7 +41,7 @@ tracer_provider = trace.get_tracer_provider()
 tracer_provider.add_span_processor(
     BatchSpanProcessor(
         OTLPSpanExporter(
-            endpoint="http://otel-collector-service.lunchbox.svc.cluster.local:4317",
+            endpoint="http://otel-collector-service:4317",
             insecure=True,
         )
     )
