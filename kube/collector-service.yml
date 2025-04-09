@@ -15,3 +15,6 @@ spec:
       protocol: TCP
       port: 8889
       targetPort: 8889
+  env:
+   - name: COLLECTOR_URL
+     value: 

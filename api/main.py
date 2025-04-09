@@ -23,11 +23,13 @@ from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExp
 from opentelemetry import trace, metrics
 
 resource = Resource(attributes={"service.name": "fastapi-backend"})
+meter = metrics.get_meter("fastapi-meter")
 
-# exporter = OTLPLogExporter(
-#     endpoint="http://otel-collector-service.lunchbox.svc.cluster.local:4317",
-#     insecure=True,
-# )
+request_counter = meter.create_counter(
+    name="fastapi_requests_total",
+    description="Total number of FastAPI requests",
+    unit="1",
+)
 
 # --- Tracing ---
 trace.set_tracer_provider(TracerProvider(resource=resource))
@@ -37,9 +39,10 @@ tracer_provider.add_span_processor(BatchSpanProcessor(tracer_exporter))
 
 # --- Metrics ---
 metric_exporter = OTLPMetricExporter(
-    endpoint="http://otel-collector:4317", insecure=True
+    endpoint="http://otel-collector-service:4317", insecure=True
 )
 metric_reader = PeriodicExportingMetricReader(metric_exporter)
+
 metrics.set_meter_provider(
     MeterProvider(resource=resource, metric_readers=[metric_reader])
 )
@@ -68,12 +71,14 @@ api_router = APIRouter(prefix="/api")
 @api_router.get("/")
 def root():
     logging.getLogger(__name__).info("Hit root endpoint")
+    request_counter.add(1, {"endpoint": "/"})
     return {"message": "Hello from Azure!"}
 
 
 @api_router.get("/health")
 def health_check():
     logging.getLogger(__name__).info("Health check pinged")
+    request_counter.add(1, {"endpoint": "/health"})
     return {"status": "Healthy"}
 
 

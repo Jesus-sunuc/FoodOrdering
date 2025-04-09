@@ -23,7 +23,7 @@ data:
       pipelines:
         metrics:
           receivers: [otlp]
-          exporters: [prometheus]
+          exporters: [prometheus, debug]
         logs:
           receivers: [otlp]
           exporters: [loki, debug]
