@@ -1,17 +1,29 @@
 receivers:
-  filelog:
-    include:
-      - /var/log/api/*.log
-    start_at: beginning
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
 
 exporters:
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
   debug:
     verbosity: detailed
+  prometheus:
+    endpoint: 0.0.0.0:8889
+  zipkin:
+    endpoint: http://zipkin:9411/api/v2/spans
 
 service:
   pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [zipkin, debug]
+
+    metrics:
+      receivers: [otlp]
+      exporters: [prometheus, debug]
+
     logs:
-      receivers: [filelog]
+      receivers: [otlp]
       exporters: [loki, debug]
