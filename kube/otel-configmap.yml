@@ -10,7 +10,11 @@ data:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
+
     exporters:
+      prometheus:
+        endpoint: "0.0.0.0:8889"
+        
       loki:
         endpoint: "http://loki:3100/loki/api/v1/push"
       debug:
@@ -18,6 +22,9 @@ data:
 
     service:
       pipelines:
+        metrics:
+          receivers: [otlp]
+          exporters: [prometheus]
         logs:
           receivers: [otlp]
           exporters: [loki, debug]

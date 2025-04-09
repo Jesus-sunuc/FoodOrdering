@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: app
   namespace: lunchbox
+  annotations:
 spec:
   rules:
     - host: lunchbox6.duckdns.org
@@ -23,6 +24,15 @@ spec:
                 name:  api
                 port:
                   number: 8090
+          
+          - path: /prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  number: 9090
+
 
           - path: /grafana
             pathType: Prefix
