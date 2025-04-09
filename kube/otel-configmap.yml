@@ -14,7 +14,6 @@ data:
     exporters:
       prometheus:
         endpoint: "0.0.0.0:8889"
-        
       loki:
         endpoint: "http://loki:3100/loki/api/v1/push"
       debug:
