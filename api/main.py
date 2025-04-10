@@ -59,7 +59,7 @@ metrics.set_meter_provider(
 
 # --- Logging ---
 log_exporter = OTLPLogExporter(
-    endpoint="http://otel-collector:4317",
+    endpoint="http://otel-collector-service:4317",
     insecure=True,
 )
 
