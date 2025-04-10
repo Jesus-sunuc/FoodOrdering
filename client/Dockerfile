@@ -5,6 +5,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+COPY .env.staging .env
+
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_ENV_NOT_ADMIN="false"

@@ -10,6 +10,7 @@ services:
       - ./api/.env
     volumes:
       - ./api:/app
+      - ./logs:/var/log/api
     depends_on:
       - client
     restart: always
@@ -41,5 +42,54 @@ services:
       pgdata: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
+  
+  loki:
+    image: grafana/loki:latest
+
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    ports:
+      - "4317:4317"
+      - "8889:8889"
+    volumes:
+      - ./configs/otel-config.yaml:/etc/otel/config.yaml
+      - ./logs:/var/log/api
+    command: ["--config=/etc/otel/config.yaml"]
+    depends_on:
+      - loki
+      - prometheus
+      - zipkin
+    restart: always
+
+  grafana:
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
+    image: grafana/grafana:latest
+    ports:
+      - "8899:3000"
+    volumes:
+      - ./configs/grafana-datasource.yml:/etc/grafana/provisioning/datasources/ds.yaml
+    depends_on:
+      - loki
+    restart: always
+  
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+  zipkin:
+    image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - 9411:9411
+
 volumes:
   pgdata:

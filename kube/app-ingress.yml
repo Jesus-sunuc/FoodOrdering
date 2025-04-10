@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: app
   namespace: lunchbox
+  annotations:
 spec:
   rules:
     - host: lunchbox6.duckdns.org
@@ -15,6 +16,7 @@ spec:
                 name:  app
                 port:
                   number: 80
+                  
           - path: /api
             pathType: Prefix
             backend:
@@ -22,5 +24,20 @@ spec:
                 name:  api
                 port:
                   number: 8090
+          
+          - path: /zipkin
+            pathType: Prefix
+            backend:
+              service:
+                name: zipkin
+                port:
+                  number: 9411
 
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
 
