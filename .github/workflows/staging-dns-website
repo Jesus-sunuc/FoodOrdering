@@ -1,0 +1,75 @@
+name: Deploy Full Stack to Staging (DuckDNS)
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build_and_push_backend:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push FastAPI Docker Image
+        run: |
+          cd api
+            docker build -t jesus6190/lunchbox_api:${{github.run_number}} .
+            docker push jesus6190/lunchbox_api:${{github.run_number}}
+
+  build_and_push_frontend:
+    runs-on: self-hosted
+    needs: build_and_push_backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Frontend Docker Image
+        run: |
+          docker build \
+            -t jesus6190/lunchbox_client:${{github.run_number}} \
+            --build-arg VITE_API_URL=https://lunchbox6.duckdns.org/api \
+            ./client
+          docker push jesus6190/lunchbox_client:${{github.run_number}}
+
+  deploy_to_kubernetes:
+    runs-on: self-hosted
+    needs: [build_and_push_backend, build_and_push_frontend]
+    steps:
+      - name: Deploy Backend and Frontend to Kubernetes
+        run: |
+          kubectl apply -f ./kube/api-deployment.yml
+          kubectl apply -f ./kube/api-svc.yml
+          kubectl apply -f ./kube/app-deployment.yml
+          kubectl apply -f ./kube/app-svc.yml
+          kubectl apply -f ./kube/app-ingress.yml
+
+  notify_on_failure:
+    runs-on: ubuntu-latest
+    if: failure()
+    needs: [build_and_push_backend, build_and_push_frontend, deploy_to_kubernetes]
+    steps:
+      - name: Send Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "content": "@everyone Build or Deploy failed on **${{ github.repository }}** in branch `${{ github.ref_name }}`!\nCheck the run: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}>"
+               }' \
+               "$DISCORD_WEBHOOK"
