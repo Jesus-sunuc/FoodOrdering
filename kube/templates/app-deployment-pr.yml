@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app
-  namespace: lunchbox
+  namespace: pr-${PR_NUMBER}
 spec:
   strategy:
     type: RollingUpdate
