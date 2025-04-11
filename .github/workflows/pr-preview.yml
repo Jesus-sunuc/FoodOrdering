@@ -42,10 +42,11 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
+          export PR_NUMBER=${{ github.event.pull_request.number }}
           mkdir -p kube/generated
-          export PR_NUMBER=${PR_NUMBER}
-          for f in ./kube/templates/*.yml; do
-            envsubst < $f > ./kube/generated/$(basename $f)
+          for f in ./kube/templates/*.tpl.yml; do
+            outname=$(basename "$f" .tpl.yml).yml
+            envsubst < "$f" > "./kube/generated/$outname"
           done
 
           kubectl apply -n pr-${PR_NUMBER} -f ./kube/generated/
