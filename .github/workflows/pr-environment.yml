@@ -36,6 +36,10 @@ jobs:
       - name: Create Namespace
         run: kubectl create namespace pr-${PR_NUMBER} || true
 
+      - name: Update DuckDNS
+        run: |
+          curl "https://www.duckdns.org/update?domains=pr-${{ github.event.pull_request.number }}-myapp&token=${{ secrets.DUCKDNS_TOKEN }}&ip=${{ secrets.PUBLIC_IP }}"
+
       - name: Deploy to Kubernetes
         run: |
           mkdir -p kube/generated
