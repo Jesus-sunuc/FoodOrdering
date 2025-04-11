@@ -1,0 +1,12 @@
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: self-hosted
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Delete Namespace
+        run: kubectl delete namespace pr-${PR_NUMBER} --ignore-not-founds

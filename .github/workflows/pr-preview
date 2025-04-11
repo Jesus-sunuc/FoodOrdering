@@ -1,0 +1,63 @@
+name: Deploy PR Preview Environment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  deploy_preview:
+    runs-on: self-hosted
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push API Image
+        run: |
+          docker build -t jesus6190/lunchbox_api:pr-${PR_NUMBER} 
+          docker push jesus6190/lunchbox_api:pr-${PR_NUMBER}
+
+      - name: Build and Push Frontend Image
+        run: |
+          docker build \
+            --build-arg VITE_API_URL=https://pr-${PR_NUMBER}.lunchbox.duckdns.org/api \
+            -t jesus6190/lunchbox_client:pr-${PR_NUMBER} ./client
+          docker push jesus6190/lunchbox_client:pr-${PR_NUMBER}
+
+      - name: Create Namespace
+        run: kubectl create namespace pr-${PR_NUMBER} || true
+
+      - name: Update DuckDNS
+        run: |
+          curl "https://www.duckdns.org/update?domains=pr-${{ github.event.pull_request.number }}-myapp&token=${{ secrets.DUCKDNS_TOKEN }}&ip=${{ secrets.PUBLIC_IP }}"
+
+      - name: Deploy to Kubernetes
+        run: |
+          export PR_NUMBER=${{ github.event.pull_request.number }}
+          mkdir -p kube/generated
+          for f in ./kube/templates/*.tpl.yml; do
+            outname=$(basename "$f" .tpl.yml).yml
+            envsubst < "$f" > "./kube/generated/$outname"
+          done
+
+          kubectl apply -n pr-${PR_NUMBER} -f ./kube/generated/
+
+      - name: Comment on Pull Request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const domain = `https://pr-${prNumber}.lunchbox.duckdns.org`;
+            github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Preview environment for PR #${prNumber} is live at: ${domain}`
+            });
