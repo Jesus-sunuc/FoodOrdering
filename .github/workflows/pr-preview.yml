@@ -43,8 +43,8 @@ jobs:
         run: |
           export PR_NUMBER=${{ github.event.pull_request.number }}
           mkdir -p kube/generated
-          for f in ./kube/templates/*.tpl.yml; do
-            outname=$(basename "$f" .tpl.yml).yml
+          for f in ./kube/templates/*.yml; do
+            outname=$(basename "$f")
             envsubst < "$f" > "./kube/generated/$outname"
           done
 
