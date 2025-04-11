@@ -2,6 +2,8 @@ name: Build and deploy Python API to Azure - lunch-box-api
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
