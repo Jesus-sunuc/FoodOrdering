@@ -6,7 +6,7 @@ metadata:
   annotations:
 spec:
   rules:
-    - host: pr-${PR_NUMBER}.lunchbox6.duckdns.org
+    - host: lunchbox6.duckdns.org
       http:
         paths:
           - path: /

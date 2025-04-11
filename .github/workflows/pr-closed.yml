@@ -9,4 +9,4 @@ jobs:
       PR_NUMBER: ${{ github.event.pull_request.number }}
     steps:
       - name: Delete Namespace
-        run: kubectl delete namespace pr-${PR_NUMBER} --ignore-not-found
+        run: kubectl delete namespace pr-${PR_NUMBER} --ignore-not-founds
