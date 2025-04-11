@@ -85,7 +85,7 @@ export function App() {
 
   useEffect(() => {
     document.body.className =
-      theme === "dark" ? "custom-dark" : "bg-light text-dark";
+      theme === "dark" ? "custom-yellow" : "bg-light text-dark";
   }, [theme]);
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export function App() {
   useEffect(() => {
     localStorage.setItem("theme", theme);
     document.body.className =
-      theme === "dark" ? "custom-dark" : "bg-light text-dark";
+      theme === "dark" ? "custom-yellow" : "bg-light text-dark";
   }, [theme]);
 
   return (
