@@ -21,6 +21,7 @@ jobs:
 
       - name: Build and Push API Image
         run: |
+          cd api
           docker build -t jesus6190/lunchbox_api:pr-${PR_NUMBER} 
           docker push jesus6190/lunchbox_api:pr-${PR_NUMBER}
 
