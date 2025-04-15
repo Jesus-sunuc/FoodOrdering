@@ -21,4 +21,5 @@ data:
     ls -1t /backups/db_backup_*.sql | tail -n +5 | xargs -d '\n' rm -f || true
     echo "Old backups cleaned"
     echo "File contents:"
-    echo "$(cat "$BACKUP_FILE")"
+    echo "$(cat "$BACKUP_FILE")" 
+    head -n 20 "$BACKUP_FILE"
