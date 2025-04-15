@@ -20,3 +20,5 @@ data:
     # Keep only the 4 most recent backups
     ls -1t /backups/db_backup_*.sql | tail -n +5 | xargs -d '\n' rm -f || true
     echo "Old backups cleaned"
+    echo "File contents:"
+    echo "$(cat "$BACKUP_FILE")"
