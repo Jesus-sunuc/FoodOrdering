@@ -22,4 +22,4 @@ data:
     echo "Old backups cleaned"
     echo "File contents:"
     echo "$(cat "$BACKUP_FILE")" 
-    echo "$(head -n 20 "$BACKUP_FILE")""
+    echo "$(sed -n 100,119p "$BACKUP_FILE")""
