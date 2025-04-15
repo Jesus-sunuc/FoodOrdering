@@ -16,5 +16,5 @@ spec:
       port: 8889
       targetPort: 8889
   env:
-   - name: COLLECTOR_URL
-     value: 
+  #  - name: COLLECTOR_URL
+  #    value: 
