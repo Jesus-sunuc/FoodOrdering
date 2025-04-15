@@ -6,26 +6,26 @@ metadata:
   annotations:
 spec:
   rules:
-    - host: pr-${PR_NUMBER}.lunchbox.duckdns.org
+    - host: lunchbox6.duckdns.org
       http:
         paths:
-          - path: /
+          - path: /pr-${PR_NUMBER}/
             pathType: Prefix
             backend:
               service:
-                name:  app
+                name: app
                 port:
                   number: 80
-                  
-          - path: /api
+
+          - path: /pr-${PR_NUMBER}/api
             pathType: Prefix
             backend:
               service:
-                name:  api
+                name: api
                 port:
                   number: 8090
-          
-          - path: /zipkin
+
+          - path: /pr-${PR_NUMBER}/zipkin
             pathType: Prefix
             backend:
               service:
@@ -33,11 +33,10 @@ spec:
                 port:
                   number: 9411
 
-          - path: /grafana
+          - path: /pr-${PR_NUMBER}/grafana
             pathType: Prefix
             backend:
               service:
                 name: grafana
                 port:
                   number: 3000
-

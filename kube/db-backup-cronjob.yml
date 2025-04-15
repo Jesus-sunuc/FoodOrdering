@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: db-backup
+  namespace: lunchbox
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: postgres-backup
+              image: postgres:16
+              command: ["/bin/bash", "-c", "/scripts/backup.sh"]
+              env:
+                - name: DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-secret
+                      key: DB_NAME
+                - name: DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-secret
+                      key: DB_USER
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-secret
+                      key: DB_PASSWORD
+              volumeMounts:
+                - name: backup-volume
+                  mountPath: /backups
+                - name: script-volume
+                  mountPath: /scripts
+          volumes:
+            - name: backup-volume
+              persistentVolumeClaim:
+                claimName: db-backup-pvc
+            - name: script-volume
+              configMap:
+                name: db-backup-script
+                defaultMode: 0777
