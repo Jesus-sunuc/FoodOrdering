@@ -488,3 +488,7 @@ data:
       )
     $procedure$
     ;
+
+    INSERT INTO category (category_name) VALUES ('test category 1');
+    INSERT INTO category (category_name) VALUES ('test category 2');
+    INSERT INTO category (category_name) VALUES ('test category 3');
