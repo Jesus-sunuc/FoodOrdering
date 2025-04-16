@@ -45,5 +45,5 @@ spec:
           - mountPath: /var/lib/postgresql/data
             name: pgdata
           - mountPath: /docker-entrypoint-initdb.d/init.sql
-            subPath: db-init
+            subPath: init.sql
             name: schema-init
