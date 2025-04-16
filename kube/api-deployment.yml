@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: jesus6190/lunchbox_api:45
+        image: jesus6190/lunchbox_api:26
         ports:
         - containerPort: 8000
 
