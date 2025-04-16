@@ -4,7 +4,7 @@ metadata:
   name: dbconfig
   namespace: lunchbox
 data:
-  1-init.sql: |
+  init.sql: |
     -- DROP SCHEMA lunch_box;
     
     CREATE SCHEMA lunch_box;
