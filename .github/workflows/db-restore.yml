@@ -1,6 +1,7 @@
 name: Restore From Dump
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
