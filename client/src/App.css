@@ -7,3 +7,8 @@
   background-color: #121212 !important;
   color: #b3b3b3 !important;
 }
+
+.custom-yellow {
+  background-color: yellow;
+  color: yellowgreen;
+}

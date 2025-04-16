@@ -36,3 +36,4 @@ jobs:
           kubectl cp ./dump.sql lunchbox/${{ steps.find_db.outputs.db_pod }}:/tmp/dump.sql
           kubectl exec -n lunchbox ${{ steps.find_db.outputs.db_pod }} -- \
           pg_restore -U app_admin -d postgres /tmp/dump.sql
+ 
