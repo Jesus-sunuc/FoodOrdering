@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: db-pvc1
+  name: db-pvc2
   namespace: lunchbox
 spec:
   accessModes:
