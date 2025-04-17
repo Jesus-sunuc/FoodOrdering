@@ -41,10 +41,12 @@ jobs:
 
       - name: Copy dump from backup pod
         run: |
-          kubectl cp lunchbox/${{ steps.pvc_debug.pvc_pod }}:/backups/${{ steps.get_dump.dump_name }} ./dump.sql
+          kubectl cp lunchbox/${{ steps.pvc_debug.outputs.pvc_pod }}:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
       - name: Restore database
         run: |
+          echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
+          echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
           kubectl cp ./dump.sql lunchbox/${{ steps.find_db.outputs.db_pod }}:/tmp/dump.sql
           kubectl exec -i ${{ steps.find_db.outputs.db_pod }} -- \
           pg_restore -U app_admin -C -d postgres /tmp/dump.sql
