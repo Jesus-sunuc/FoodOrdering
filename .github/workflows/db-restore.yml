@@ -38,10 +38,10 @@ jobs:
         run: |
           DUMP_NAME=$(kubectl exec -n lunchbox pvc-debugger -- ls -t /backups | head -n 1)
           echo "dump_name=$DUMP_NAME" >> $GITHUB_OUTPUT
-
+        
       - name: Copy dump from backup pod
         run: |
-          kubectl cp lunchbox/pvc-debugger:/backups/db_backup.sql -n lunchbox ./dump.sql
+          kubectl cp -n lunchbox pvc-debugger:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
           # kubectl cp lunchbox/${{ steps.pvc_debug.outputs.pvc_pod }}:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
