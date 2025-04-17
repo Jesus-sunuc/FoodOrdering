@@ -52,4 +52,4 @@ jobs:
           kubectl cp ./dump.sql lunchbox/${{ steps.find_db.outputs.db_pod }}:/tmp/dump.sql
           kubectl exec -i ${{ steps.find_db.outputs.db_pod }} -- \
           psql -U app_admin -d postgres -f /tmp/dump.sql
-      
+    
