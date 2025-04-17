@@ -41,7 +41,7 @@ jobs:
 
       - name: Copy dump from backup pod
         run: |
-          kubectl cp lunchbox/pvc-debugger:/backups/db_backup.sql ./dump.sql -c pvc-debugger
+          kubectl cp lunchbox/pvc-debugger:/backups/db_backup.sql ./dump.sql -c debugger
 
           # kubectl cp lunchbox/${{ steps.pvc_debug.outputs.pvc_pod }}:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
