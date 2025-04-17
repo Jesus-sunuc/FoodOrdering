@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-debugger
+spec:
+  containers:
+  - name: debugger
+    image: alpine
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /backups
+      name: backup-volume
+  volumes:
+  - name: backup-volume
+    persistentVolumeClaim:
+      claimName: db-backup-pvc
+  restartPolicy: Never
