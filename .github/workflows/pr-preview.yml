@@ -9,7 +9,7 @@ permissions:
   issues: write
   
 jobs:
-  deploy_preview:""
+  deploy_preview:
     runs-on: self-hosted
     env:
       PR_NUMBER: ${{ github.event.pull_request.number }}
