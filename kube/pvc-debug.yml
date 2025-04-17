@@ -7,7 +7,7 @@ spec:
   containers:
   - name: debugger
     image: alpine
-    command: ["sleep", "3600"]
+    command: ["/bin/sh", "-c", "sleep infinity"]
     volumeMounts:
     - mountPath: /backups
       name: backup-volume
