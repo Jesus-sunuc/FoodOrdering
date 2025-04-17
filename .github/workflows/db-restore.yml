@@ -19,6 +19,10 @@ jobs:
             --no-headers | grep 'db-deployment' | grep 'Running' | tail -n1 | awk '{print $1}')
           echo "db_pod=$DB_POD" >> $GITHUB_OUTPUT
 
+      - name: Delete pvc-debugger pod
+        run: |
+          kubectl delete pod pvc-debugger -n lunchbox --ignore-not-found
+
       - name: Get PVC debugger pod
         id: pvc_debug
         run: |
