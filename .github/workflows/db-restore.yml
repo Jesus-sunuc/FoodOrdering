@@ -1,12 +1,11 @@
 name: Restore From Dump
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
   restore_database:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -30,9 +29,15 @@ jobs:
             --no-headers | grep 'pvc-debugger' | grep 'Running' | awk '{print $1}')
           echo "pvc_pod=$PVC_POD" >> $GITHUB_OUTPUT
 
+      - name: Get latest backup filename
+        id: get_dump
+        run: |
+          DUMP_NAME=$(kubectl exec -n lunchbox pvc-debugger -- ls -t /backups | head -n 1)
+          echo "dump_name=$DUMP_NAME" >> $GITHUB_OUTPUT
+
       - name: Copy dump from backup pod
         run: |
-          kubectl cp lunchbox/${{ steps.pvc_debug.pvc_pod }}:/backups/db_backup.sql ./dump.sql
+          kubectl cp lunchbox/${{ steps.pvc_debug.pvc_pod }}:/backups/${{ steps.get_dump.dump_name }} ./dump.sql
 
       - name: Restore database
         run: |
