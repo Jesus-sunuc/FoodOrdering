@@ -30,7 +30,7 @@ jobs:
 
       - name: Copy dump from backup pod
         run: |
-          kubectl cp lunchbox/pvc_debugger:/backups/db_backup.sql ./dump.sql #${{ steps.get_dump.dump_name }}
+          kubectl cp lunchbox/pvc-debugger:/backups/db_backup.sql ./dump.sql #${{ steps.get_dump.dump_name }}
 
       - name: Restore database
         run: |
