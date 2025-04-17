@@ -2,11 +2,12 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pvc-debugger
+  namespace: lunchbox
 spec:
   containers:
   - name: debugger
     image: alpine
-    command: ["sleep", "3600"]
+    command: ["/bin/sh", "-c", "sleep infinity"]
     volumeMounts:
     - mountPath: /backups
       name: backup-volume

@@ -39,11 +39,10 @@ jobs:
         run: |
           DUMP_NAME=$(kubectl exec -n lunchbox pvc-debugger -- ls -t /backups | head -n 1)
           echo "dump_name=$DUMP_NAME" >> $GITHUB_OUTPUT
-
+        
       - name: Copy dump from backup pod
         run: |
-          kubectl cp -n lunchbox lunchbox/pvc-debugger:/backups/db_backup.sql ./dump.sql
-
+          kubectl cp -n lunchbox pvc-debugger:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
           # kubectl cp lunchbox/${{ steps.pvc_debug.outputs.pvc_pod }}:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
       - name: Restore database
@@ -52,5 +51,4 @@ jobs:
           echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
           kubectl cp ./dump.sql lunchbox/${{ steps.find_db.outputs.db_pod }}:/tmp/dump.sql
           kubectl exec -i ${{ steps.find_db.outputs.db_pod }} -- \
-          pg_restore -U app_admin -C -d postgres /tmp/dump.sql
- 
+          psql -U app_admin -d postgres -f /tmp/dump.sql
