@@ -22,13 +22,6 @@ jobs:
         run: |
           kubectl delete pod pvc-debugger -n lunchbox --ignore-not-found
 
-      - name: Get PVC debugger pod
-        id: pvc_debug
-        run: |
-          PVC_POD=$(kubectl get pods -n lunchbox \
-            --no-headers | grep 'pvc-debugger' | grep 'Running' | awk '{print $1}')
-          echo "pvc_pod=$PVC_POD" >> $GITHUB_OUTPUT
-
       - name: Get latest backup filename
         id: get_dump
         run: |
@@ -37,7 +30,7 @@ jobs:
 
       - name: Copy dump from backup pod
         run: |
-          kubectl cp lunchbox/${{ steps.pvc_debug.pvc_pod }}:/backups/db_backup.sql ./dump.sql #${{ steps.get_dump.dump_name }}
+          kubectl cp lunchbox/pvc_debugger:/backups/db_backup.sql ./dump.sql #${{ steps.get_dump.dump_name }}
 
       - name: Restore database
         run: |
