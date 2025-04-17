@@ -16,7 +16,7 @@ spec:
       volumes:
         - name: pgdata
           persistentVolumeClaim:
-            claimName: db-pvc
+            claimName: db-pvc1
         - name: schema-init
           configMap:
             name: dbconfig
