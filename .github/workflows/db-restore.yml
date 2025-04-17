@@ -24,7 +24,7 @@ jobs:
 
       - name: Create pvc-debugger pod
         run: |
-          kubectl apply -n lunchbox -f foodOrderingSite/kube/pvc-debug.yml
+          kubectl apply -n lunchbox -f kube/pvc-debug.yml
 
       - name: Get PVC debugger pod
         id: pvc_debug
