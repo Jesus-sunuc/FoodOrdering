@@ -111,3 +111,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Why did the Java developer need glasses?
+# Because he didn't C#!
