@@ -19,13 +19,12 @@ jobs:
             --no-headers | grep 'db-deployment' | grep 'Running' | tail -n1 | awk '{print $1}')
           echo "db_pod=$DB_POD" >> $GITHUB_OUTPUT
 
-      - name: Get latest backup pod
-        id: find_backup
+      - name: Get PVC debugger pod
+        id: pvc_debug
         run: |
-          BACKUP_POD=$(kubectl get pods -n lunchbox \
-            --sort-by=.metadata.creationTimestamp \
-            --no-headers | grep 'db-backup' | tail -n1 | awk '{print $1}')
-          echo "backup_pod=$BACKUP_POD" >> "$GITHUB_OUTPUT"
+          PVC_POD=$(kubectl get pods -n lunchbox \
+            --no-headers | grep 'pvc-debugger' | grep 'Running' | awk '{print $1}')
+          echo "pvc_pod=$PVC_POD" >> $GITHUB_OUTPUT
 
       - name: Copy dump from backup pod
         run: |
@@ -34,6 +33,6 @@ jobs:
       - name: Restore database
         run: |
           kubectl cp ./dump.sql lunchbox/${{ steps.find_db.outputs.db_pod }}:/tmp/dump.sql
-          kubectl exec -n lunchbox ${{ steps.find_db.outputs.db_pod }} -- \
-          pg_restore -U app_admin -d postgres /tmp/dump.sql
+          kubectl exec -i ${{ steps.find_db.outputs.db_pod }} -- \
+          pg_restore -U app_admin -C -d postgres /tmp/dump.sql
  
