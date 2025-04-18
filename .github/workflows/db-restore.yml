@@ -45,6 +45,12 @@ jobs:
           kubectl cp -n lunchbox pvc-debugger:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
           # kubectl cp lunchbox/${{ steps.pvc_debug.outputs.pvc_pod }}:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
+      - name: Run after fail
+        if: always()
+        run: |
+          echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
+          echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
+
       - name: Restore database
         run: |
           echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
