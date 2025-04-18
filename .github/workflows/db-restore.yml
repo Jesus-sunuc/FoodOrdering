@@ -30,6 +30,7 @@ jobs:
       - name: Get PVC debugger pod
         id: pvc_debug
         run: |
+          sleep 5
           PVC_POD=$(kubectl get pods -n lunchbox \
             --no-headers | grep 'pvc-debugger' | grep 'Running' | awk '{print $1}')
           echo "pvc_pod=$PVC_POD" >> $GITHUB_OUTPUT
