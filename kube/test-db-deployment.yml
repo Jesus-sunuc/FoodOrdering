@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-db-deployment
+  namespace: lunchbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: db-pvc1
+        - name: schema-init
+          configMap:
+            name: dbconfig
+      containers:
+      - name: postgres
+        image: postgres:16
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_NAME
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+        readinessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - |
+                pg_isready -U $POSTGRES_USER -d $DB_NAME
+          initialDelaySeconds: 1
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: pgdata
+          - mountPath: /docker-entrypoint-initdb.d/init.sql
+            subPath: init.sql
+            name: schema-init
