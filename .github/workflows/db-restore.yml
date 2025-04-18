@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
           echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
-          DB_POD=$(kubectl get pods -n lunchbox --no-headers | awk '$1 ~ /db-deployment/ && $3 == "Running" {print $1}' | tail -n1)
+          DB_POD=$(kubectl get pods -n lunchbox --no-headers | awk '$1 ~ /db-deployment/ && $3 == "Running" {print $1}' | tail -n1 | tr -d '\r\n')
           kubectl describe pod $DB_POD
           kubectl cp ./dump.sql lunchbox/$DB_POD:/tmp/dump.sql
           kubectl exec -c lunchbox -i $DB_POD -- \
