@@ -64,6 +64,7 @@ jobs:
       - name: Run Integration Tests
         run: |
           # example pytest, npm, or your test runner
+          cd ./api
           pytest integration_test.py
           # npm run test:integration or pytest integration/
 
