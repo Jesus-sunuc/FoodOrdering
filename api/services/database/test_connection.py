@@ -11,7 +11,7 @@ def test_get_db_connection():
     conn = psycopg2.connect(
         host="localhost",
         database="lunchbox_test",
-        user="app_admin",
+        user="lunchbox",
         password="secret123",
         cursor_factory=RealDictCursor,
     )
