@@ -25,11 +25,11 @@ jobs:
       - name: Create pvc-debugger pod
         run: |
           kubectl apply -n lunchbox -f kube/pvc-debug.yml
-          kubectl describe pod pvc-debugger
 
       - name: Get PVC debugger pod
         id: pvc_debug
         run: |
+          sleep 5
           PVC_POD=$(kubectl get pods -n lunchbox \
             --no-headers | grep 'pvc-debugger' | grep 'Running' | awk '{print $1}')
           echo "pvc_pod=$PVC_POD" >> $GITHUB_OUTPUT
@@ -45,10 +45,17 @@ jobs:
           kubectl cp lunchbox/pvc-debugger:/backups/db_backup.sql -c debugger ./dump.sql
           # kubectl cp lunchbox/${{ steps.pvc_debug.outputs.pvc_pod }}:/backups/${{ steps.get_dump.outputs.dump_name }} ./dump.sql
 
+      - name: Run after fail
+        if: always()
+        run: |
+          echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
+          echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
+
       - name: Restore database
         run: |
           echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
           echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
-          kubectl cp ./dump.sql lunchbox/${{ steps.find_db.outputs.db_pod }}:/tmp/dump.sql
-          kubectl exec -i ${{ steps.find_db.outputs.db_pod }} -- \
+          DB_POD=$(kubectl get pods -n lunchbox --no-headers | awk '$1 ~ /db-deployment/ && $3 == "Running" {print $1}' | tail -n1 | tr -d '\r\n')
+          kubectl cp -n lunchbox ./dump.sql lunchbox/$DB_POD:/tmp/dump.sql
+          kubectl exec -n lunchbox -i $DB_POD -- \
           psql -U app_admin -d postgres -f /tmp/dump.sql
