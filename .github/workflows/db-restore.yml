@@ -25,7 +25,6 @@ jobs:
       - name: Create pvc-debugger pod
         run: |
           kubectl apply -n lunchbox -f kube/pvc-debug.yml
-          kubectl describe pod pvc-debugger
 
       - name: Get PVC debugger pod
         id: pvc_debug
@@ -57,7 +56,6 @@ jobs:
           echo "PVC pod: ${{ steps.pvc_debug.outputs.pvc_pod }}"
           echo "Dump name: ${{ steps.get_dump.outputs.dump_name }}"
           DB_POD=$(kubectl get pods -n lunchbox --no-headers | awk '$1 ~ /db-deployment/ && $3 == "Running" {print $1}' | tail -n1 | tr -d '\r\n')
-          kubectl describe pod -n lunchbox $DB_POD
           kubectl cp -n lunchbox ./dump.sql lunchbox/$DB_POD:/tmp/dump.sql
           kubectl exec -n lunchbox -i $DB_POD -- \
           psql -U app_admin -d postgres -f /tmp/dump.sql
