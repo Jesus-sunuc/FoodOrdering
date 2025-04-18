@@ -59,6 +59,7 @@ jobs:
           DB_POD=$(kubectl get pods -n lunchbox \
             --sort-by=.metadata.creationTimestamp \
             --no-headers | grep 'db-deployment' | grep 'Running' | tail -n1 | awk '{print $1}')
+          kubectl describe pod $DB_POD
           kubectl cp ./dump.sql lunchbox/$DB_POD:/tmp/dump.sql
           kubectl exec -c lunchbox -i $DB_POD -- \
           psql -U app_admin -d postgres -f /tmp/dump.sql
