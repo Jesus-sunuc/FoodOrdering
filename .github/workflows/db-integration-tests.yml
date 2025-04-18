@@ -1,0 +1,57 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: lunchbox_test
+          POSTGRES_USER: app_admin
+          POSTGRES_PASSWORD: secret123
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U app_admin -d lunchbox_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DB_NAME: lunchbox_test
+      DB_USER: app_admin
+      DB_PASSWORD: secret123
+      DB_CONN: "Host=localhost;Database=lunchbox_test;Username=app_admin;Password=secret123"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -U $DB_USER -d $DB_NAME; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
+
+      - name: Initialize DB schema
+        run: |
+          psql -h localhost -U $DB_USER -d $DB_NAME -f ./kube/db-config.sql
+        env:
+          PGPASSWORD: ${{ env.DB_PASSWORD }}
+
+      - name: Run Integration Tests
+        run: |
+          # example pytest, npm, or your test runner
+          echo "run your tests here"
+          # npm run test:integration or pytest integration/
+
+      - name: Cleanup verification
+        run: docker ps -a 
+
