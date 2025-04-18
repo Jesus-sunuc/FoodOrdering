@@ -49,7 +49,7 @@ jobs:
       - name: Run Integration Tests
         run: |
           # example pytest, npm, or your test runner
-          echo "run your tests here"
+          pytest integration_test.py
           # npm run test:integration or pytest integration/
 
       - name: Cleanup verification
