@@ -24,10 +24,11 @@ jobs:
           --health-retries=5
 
     env:
+      DB_HOST: db-svc
       DB_NAME: lunchbox_test
       DB_USER: lunchbox
       DB_PASSWORD: secret123
-      DB_CONN: "Host=localhost;Database=lunchbox_test;Username=lunchbox;Password=secret123"
+      DB_CONN: "Host=db-svc;Database=lunchbox_test;Username=lunchbox;Password=secret123"
 
     steps:
       - name: Checkout code
