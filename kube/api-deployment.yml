@@ -62,4 +62,4 @@ spec:
         - name: POSTGRES_PASSWORD
           value: PleaseDoNotLeakMe!
         - name: POSTGRES_PORT
-          value: 5432
+          value: '5432'
