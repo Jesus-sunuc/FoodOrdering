@@ -11,7 +11,8 @@ class ItemService:
         return self.repo.get_all()
 
     def add_item(self, item: Item):
-        return self.repo.add_item(item)
+        self.repo.add_item(item)
+        return item 
 
     def update_item(self, item: Item):
         return self.repo.update_item(item)

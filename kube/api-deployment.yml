@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: jesus6190/lunchbox_api:64
+        image: jesus6190/lunchbox_api:70
         ports:
         - containerPort: 8000
 
@@ -53,3 +53,15 @@ spec:
             secretKeyRef:
               name: db-secret
               key: DB_CONN
+        - name: POSTGRES_HOST
+          value: db-svc
+        - name: POSTGRES_DB
+          value: postgres
+        - name: POSTGRES_USER
+          value: lunchbox
+        - name: POSTGRES_PASSWORD
+          value: PleaseDoNotLeakMe!
+        - name: POSTGRES_PORT
+          value: '5432'
+        - name: POSTGRES_SSLMODE
+          value: disable

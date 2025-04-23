@@ -48,3 +48,5 @@ spec:
             memory: "256Mi"
         env:
         - name: DB_CONN
+        - name: VITE_API_URL
+          value: https://lunchbox6.duckdns.org/api
