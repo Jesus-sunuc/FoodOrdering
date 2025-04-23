@@ -9,7 +9,7 @@ from psycopg2.extras import RealDictCursor
 
 def get_test_db_connection():
     conn = psycopg2.connect(
-        host="localhost",
+        host="db-svc",
         database="lunchbox_test",
         user="lunchbox",
         password="secret123",
