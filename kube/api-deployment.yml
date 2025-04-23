@@ -53,3 +53,13 @@ spec:
             secretKeyRef:
               name: db-secret
               key: DB_CONN
+        - name: POSTGRES_HOST
+          value: db-svc
+        - name: POSTGRES_DB
+          value: postgres
+        - name: POSTGRES_USER
+          value: lunchbox
+        - name: POSTGRES_PASSWORD
+          value: PleaseDoNotLeakMe!
+        - name: POSTGRES_PORT
+          value: 5432
