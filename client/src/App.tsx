@@ -19,6 +19,7 @@ export function App() {
 
   const { data: items = [], isLoading } = useGetItemsQuery();
   const addItemMutation = useAddItemMutation();
+  const { id, ...itemDataWithoutId } = item;
   const updateItemMutation = useUpdateItemMutation();
   const deleteItemMutation = useDeleteItemMutation();
 
@@ -40,7 +41,7 @@ export function App() {
         onError: () => toast.error("Failed to update item"),
       });
     } else {
-      addItemMutation.mutate(item, {
+      addItemMutation.mutate(itemDataWithoutId, {
         onSuccess: () => toast.success("Item added!"),
         onError: () => toast.error("Failed to add item"),
       });
