@@ -17,8 +17,7 @@ def override_db():
 @pytest.mark.asyncio
 async def test_add_get_delete_item():
     async with AsyncClient(
-        base_url="http://test",
-        transport=httpx.ASGITransport(app=app)
+        base_url="http://test", transport=httpx.ASGITransport(app=app)
     ) as client:
         item_data = {
             "item_name": "Test Item",

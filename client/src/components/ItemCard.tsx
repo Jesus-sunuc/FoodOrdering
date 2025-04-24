@@ -17,9 +17,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
 }) => {
   return (
     <Card
-      className={`mb-3 flex-fill shadow-sm ${
-        theme === "dark" ? "custom-card-dark" : "bg-light text-dark"
-      }`}
+      className={`mb-3 flex-fill shadow-sm ${theme === "dark" ? "custom-card-dark" : "bg-light text-dark"
+        }`}
     >
       <Card.Img
         variant="top"
@@ -41,9 +40,19 @@ const ItemCard: React.FC<ItemCardProps> = ({
           >
             Edit
           </Button>
-          <Button variant="danger" onClick={() => onDelete(item.id)}>
+          <Button
+            variant="danger"
+            onClick={() => {
+              if (item.id) {
+                onDelete(item.id);
+              } else {
+                console.error("Item ID is missing. Cannot delete.");
+              }
+            }}
+          >
             Delete
           </Button>
+
         </div>
       </Card.Body>
     </Card>

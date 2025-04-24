@@ -28,31 +28,6 @@ def repo(dbconn):
     return ItemRepository(dbconn)
 
 
-# def test_get_all(repo):
-#     db_rows = repo.get_all()
-
-#     items = [
-#         Item(
-#             id=str(row["id"]),
-#             title=row["item_name"],
-#             description=row["description"],
-#             image=row["image_url"],
-#             price=float(row["price"]),
-#         )
-#         for row in db_rows
-#     ]
-
-#     expected_item = Item(
-#         id="1",
-#         title="Grilled Chicken Salad",
-#         description="SGrilled chicken, greens, tomatoes, and lemon vinaigrette",
-#         price=6.99,
-#         image="https://storagelunchbox.blob.core.windows.net/images/chicken_salad.jpg",
-#     )
-
-#     assert expected_item in items
-
-
 def test_get_items():
     response = client.get("api/items")
     assert response.status_code == 200
