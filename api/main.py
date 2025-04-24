@@ -1,5 +1,7 @@
 import logging
+import time
 
+from fastapi import Request, Response
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.item_router import router as item_router
@@ -29,6 +31,12 @@ request_counter = meter.create_counter(
     name="fastapi_requests_total",
     description="Total number of FastAPI requests",
     unit="1",
+)
+
+api_duration_hist = meter.create_histogram(
+    "api_request_duration_seconds",
+    unit="s",
+    description="Duration of API requests"
 )
 
 # --- Tracing ---
@@ -111,3 +119,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+        start = time.time()
+        response = await call_next(request)
+        duration = time.time() - start
+        api_duration_hist.record(
+            duration,
+            {
+            "method": request.method,
+            "path": request.url.path,
+            })
+        return response
