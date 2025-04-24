@@ -12,6 +12,7 @@ jobs:
       postgres:
         image: postgres:16
         env:
+          POSTGRES_HOST: localhost
           POSTGRES_DB: lunchbox_test
           POSTGRES_USER: lunchbox
           POSTGRES_PASSWORD: secret123
