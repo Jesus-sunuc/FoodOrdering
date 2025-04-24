@@ -19,7 +19,6 @@ export function App() {
 
   const { data: items = [], isLoading } = useGetItemsQuery();
   const addItemMutation = useAddItemMutation();
-  const { id, ...itemDataWithoutId } = item;
   const updateItemMutation = useUpdateItemMutation();
   const deleteItemMutation = useDeleteItemMutation();
 
@@ -34,19 +33,22 @@ export function App() {
 
   const handleSave = (item: Item) => {
     const exists = items.find((i: Item) => i.id === item.id);
-
+  
     if (exists) {
       updateItemMutation.mutate(item, {
         onSuccess: () => toast.success("Item updated!"),
         onError: () => toast.error("Failed to update item"),
       });
     } else {
+      const { id, ...itemDataWithoutId } = item;
+  
       addItemMutation.mutate(itemDataWithoutId, {
         onSuccess: () => toast.success("Item added!"),
         onError: () => toast.error("Failed to add item"),
       });
     }
   };
+  
 
   const handleDelete = (id: string) => {
     toast((t) => (
