@@ -33,6 +33,11 @@ request_counter = meter.create_counter(
     unit="1",
 )
 
+active_requests = meter.create_up_down_counter(
+     name="fastapi_requests_concurrent",
+     description="Totals requests at one time and exports it",
+)
+
 api_duration_hist = meter.create_histogram(
     "api_request_duration_seconds",
     unit="s",
@@ -122,13 +127,17 @@ app.add_middleware(
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
+        active_requests.add(1, {"path": request.url.path})
         start = time.time()
-        response = await call_next(request)
-        duration = time.time() - start
-        api_duration_hist.record(
-            duration,
-            {
-            "method": request.method,
-            "path": request.url.path,
-            })
-        return response
+        try:
+            response = await call_next(request)
+            return response
+        finally:
+             duration = time.time() - start
+             active_requests.add(-1, {"path": request.url.path})
+             api_duration_hist.record(
+                duration,
+                {
+                "method": request.method,
+                "path": request.url.path,
+                })
