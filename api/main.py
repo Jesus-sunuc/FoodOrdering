@@ -27,15 +27,22 @@ from opentelemetry import trace, metrics
 resource = Resource(attributes={"service.name": "fastapi-backend"})
 meter = metrics.get_meter("fastapi-meter")
 
+request_by_ip_counter = meter.create_counter(
+     name="ip_count",
+     description="compiles requests from different ips into a count to approximate users",
+     unit="1"
+)
+
 request_counter = meter.create_counter(
     name="fastapi_requests_total",
     description="Total number of FastAPI requests",
-    unit="1",
+    unit="1"
 )
 
 active_requests = meter.create_up_down_counter(
      name="fastapi_requests_concurrent",
      description="Totals requests at one time and exports it",
+     unit="1"
 )
 
 api_duration_hist = meter.create_histogram(
@@ -127,7 +134,9 @@ app.add_middleware(
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
+        ip_address = request.headers.get("X-Forwarded-For",request.client.host).split(',')[0].strip()
         active_requests.add(1, {"path": request.url.path})
+        request_by_ip_counter.add(1,{"ip": ip_address})
         start = time.time()
         try:
             response = await call_next(request)
