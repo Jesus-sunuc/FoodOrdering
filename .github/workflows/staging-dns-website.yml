@@ -26,6 +26,7 @@ jobs:
           "pip install flake8 && flake8 --count --show-source --statistics --ignore=E,W ."
       
       - name: Run Tests
+        working-directory: ./api
         run: |
           docker run --rm -v ${{ github.workspace }}/api:/app -w /app python:3.13 bash -c \
           "pip install pytest && pytest api/items_test.py"
