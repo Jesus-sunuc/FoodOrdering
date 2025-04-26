@@ -61,7 +61,7 @@ def test_update_item():
     }
 
     response = client.put("api/items/7", json=updated_data)
-    assert response.status_code == 200
+    assert response.status_code != 200 # logic reversed to make tests fail
 
 
 def test_delete_item():
