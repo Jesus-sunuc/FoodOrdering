@@ -62,6 +62,16 @@ services:
       - prometheus
       - zipkin
     restart: always
+  
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox-exporter
+    ports:
+    - 9115:9115
+    command:
+    - --config.file=/etc/blackbox/blackbox.yml
+    volumes:
+    - ./blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
 
   grafana:
     environment:
