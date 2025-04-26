@@ -25,7 +25,7 @@ from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExp
 
 from opentelemetry import trace, metrics
 
-warnings.warn("test warning", DeprecationWarning)
+# warnings.warn("test warning", DeprecationWarning)
 
 resource = Resource(attributes={"service.name": "fastapi-backend"})
 meter = metrics.get_meter("fastapi-meter")
