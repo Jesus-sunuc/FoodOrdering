@@ -18,26 +18,12 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}/api:/app -w /app python:3.13 bash -c "pip install black && black --check ."
 
-      - name: Build Backend with Warnings as Errors
+      - name: Run Flake8 Linting
         working-directory: ./api
         run: |
-          DOCKER_BUILDKIT=1 docker build --progress=plain -t jesus6190/lunchbox_api:${{ github.run_number }} . | tee docker_backend_build.log
-          
-          if grep -i "warning" docker_backend_build.log; then
-            echo "Warnings detected in backend build!"
-            exit 1
-          fi
-
-      - name: Build Frontend with Warnings as Errors
-        working-directory: ./client
-        run: |
-          DOCKER_BUILDKIT=1 docker build --progress=plain -t jesus6190/lunchbox_client:${{ github.run_number }} . | tee docker_frontend_build.log
-          
-          if grep -i "warning" docker_frontend_build.log; then
-            echo "Warnings detected in frontend build!"
-            exit 1
-          fi
-
+          docker run --rm -v ${{ github.workspace }}/api:/app -w /app python:3.13 bash -c \
+          "pip install flake8 && flake8 --count --show-source --statistics ."
+      
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
