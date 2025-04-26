@@ -60,7 +60,7 @@ def test_update_item():
         "image_url": "https://example.com/updated.jpg",
     }
 
-    response = client.put(f"api/items/7", json=updated_data)
+    response = client.put("api/items/7", json=updated_data)
     assert response.status_code == 200
 
 

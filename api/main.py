@@ -2,7 +2,7 @@ import logging
 import time
 import warnings
 
-from fastapi import Request, Response
+from fastapi import Request
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.item_router import router as item_router
