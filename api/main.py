@@ -51,6 +51,12 @@ api_duration_hist = meter.create_histogram(
     description="Duration of API requests"
 )
 
+error_counter = meter.create_counter(
+    name="fastapi_errors_total",
+    description="Total number of FastAPI errors",
+    unit="1"
+)
+
 # --- Tracing ---
 # trace.set_tracer_provider(TracerProvider(resource=resource))
 # tracer_provider = trace.get_tracer_provider()
@@ -141,6 +147,15 @@ async def add_process_time_header(request: Request, call_next):
         try:
             response = await call_next(request)
             return response
+        except Exception as e:
+            error_counter.add(1, {
+                "path": request.url.path,
+                "Exception": type(e).__name__,
+                "error_message": str(e)
+            })
+            logger = logging.getLogger(__name__)
+            logger.error("Unhandled exception during request", exc_info=True)
+            raise
         finally:
              duration = time.time() - start
              active_requests.add(-1, {"path": request.url.path})
