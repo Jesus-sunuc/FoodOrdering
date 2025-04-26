@@ -32,8 +32,8 @@ jobs:
             -u $(id -u):$(id -g) \
             -v ${{ github.workspace }}/api:/app \
             -w /app python:3.13 bash -c "
-              pip install -r requirements.txt &&
-              pip install pytest &&
+              pip install --user -r requirements.txt &&
+              pip install --user pytest &&
               pytest items_test.py
             "
 
