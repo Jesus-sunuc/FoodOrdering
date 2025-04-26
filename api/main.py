@@ -1,5 +1,6 @@
 import logging
 import time
+import warnings
 
 from fastapi import Request, Response
 from fastapi import APIRouter, FastAPI
@@ -23,6 +24,8 @@ from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 
 from opentelemetry import trace, metrics
+
+warnings.warn("test warning", DeprecationWarning)
 
 resource = Resource(attributes={"service.name": "fastapi-backend"})
 meter = metrics.get_meter("fastapi-meter")
