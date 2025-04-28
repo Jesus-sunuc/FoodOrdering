@@ -143,6 +143,7 @@ async def add_process_time_header(request: Request, call_next):
         .strip()
     )
     active_requests.add(1, {"path": request.url.path})
+    request_counter.add(1, {"endpoint": request.url.path})
     request_by_ip_counter.add(1, {"ip": ip_address})
     start = time.time()
     try:
