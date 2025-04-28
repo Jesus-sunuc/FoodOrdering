@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: jesus6190/lunchbox_client:64
+        image: jesus6190/lunchbox_client:112
         ports:
         - containerPort: 4173
 

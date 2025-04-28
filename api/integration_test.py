@@ -3,7 +3,6 @@ import pytest
 from httpx import AsyncClient
 import httpx
 from main import app
-from models.item import Item
 from services.database.connection import get_db_connection
 
 

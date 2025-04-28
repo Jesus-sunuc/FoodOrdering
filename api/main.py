@@ -1,5 +1,7 @@
 import logging
+import time
 
+from fastapi import Request
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.item_router import router as item_router
@@ -25,10 +27,30 @@ from opentelemetry import trace, metrics
 resource = Resource(attributes={"service.name": "fastapi-backend"})
 meter = metrics.get_meter("fastapi-meter")
 
+request_by_ip_counter = meter.create_counter(
+    name="ip_count",
+    description="compiles requests from different ips into a count to approximate users",
+    unit="1",
+)
+
 request_counter = meter.create_counter(
     name="fastapi_requests_total",
     description="Total number of FastAPI requests",
     unit="1",
+)
+
+active_requests = meter.create_up_down_counter(
+    name="fastapi_requests_concurrent",
+    description="Totals requests at one time and exports it",
+    unit="1",
+)
+
+api_duration_hist = meter.create_histogram(
+    "api_request_duration_seconds", unit="s", description="Duration of API requests"
+)
+
+error_counter = meter.create_counter(
+    name="fastapi_errors_total", description="Total number of FastAPI errors", unit="1"
 )
 
 # --- Tracing ---
@@ -111,3 +133,40 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    ip_address = (
+        request.headers.get("X-Forwarded-For", request.client.host)
+        .split(",")[0]
+        .strip()
+    )
+    active_requests.add(1, {"path": request.url.path})
+    request_by_ip_counter.add(1, {"ip": ip_address})
+    start = time.time()
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as e:
+        error_counter.add(
+            1,
+            {
+                "path": request.url.path,
+                "Exception": type(e).__name__,
+                "error_message": str(e),
+            },
+        )
+        logger = logging.getLogger(__name__)
+        logger.error("Unhandled exception during request", exc_info=True)
+        raise
+    finally:
+        duration = time.time() - start
+        active_requests.add(-1, {"path": request.url.path})
+        api_duration_hist.record(
+            duration,
+            {
+                "method": request.method,
+                "path": request.url.path,
+            },
+        )
