@@ -23,3 +23,7 @@ def update_item(item_id: str, item: Item, service: ItemService = Depends()):
 @router.delete("/{item_id}")
 def delete_item(item_id: str, service: ItemService = Depends()):
     return service.delete_item(item_id)
+
+@router.get("/error")
+def trigger_error():
+    raise Exception("This is a test exception")
