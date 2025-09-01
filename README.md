@@ -202,10 +202,6 @@ The API documentation is automatically generated and available at:
 
 - [MAUI Mobile App](https://github.com/Zane-Clegg/FastFoodAppPrototyping) - Cross-platform mobile application
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 👥 Team
 
 Developed as part of Fall 2024 coursework with focus on modern software engineering practices and enterprise architecture patterns.
